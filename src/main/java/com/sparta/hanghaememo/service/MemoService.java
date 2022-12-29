@@ -42,10 +42,10 @@ public class MemoService {
         return id;
     }
 
-/*    public MemoRequestDto getDetail(Long id) {
+    public MemoRequestDto getDetail(Long id) {
         Memo memo = memoRepository.findById(id).orElseThrow(
                 ()->new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        return new MemoRequestDto(memo);
-    }*/
+        return new MemoRequestDto();
+    }
 }

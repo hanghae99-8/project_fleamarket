@@ -63,7 +63,11 @@
                                 ${contents}
                             </div>
                             <div id="${id}-editarea" class="edit">
-                                <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                                <textarea id="${id}-textarea1" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                                <textarea id="${id}-textarea2" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                                <textarea id="${id}-textarea3" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                                <input type="password" id="${id}-textarea4" name="passwords" maxlength='6'  value="" placeholder="비밀번호">
+                                <input type="button" class="btn btn-outline-primary mr-7"onclick="checkPassword(${id})" value="비밀번호 확인">
                             </div>
                         </div>
                         <!-- 버튼 영역-->
@@ -79,7 +83,6 @@
         function isValidUsers(users) {
             if (users == '') {
                 alert('작성자명을 입력해주세요');
-
                 return false;
             }
             return true;
@@ -158,8 +161,14 @@
         // 숨길 버튼을 숨기고, 나타낼 버튼을 나타냅니다.
         function editPost(id) {
             showEdits(id);
+            let users = $(`#${id}-users`).text().trim();
+            let titles = $(`#${id}-titles`).text().trim();
             let contents = $(`#${id}-contents`).text().trim();
-            $(`#${id}-textarea`).val(contents);
+            let passwords = $(`#${id}-passwords`).text().trim();
+            $(`#${id}-textarea1`).val(users);
+            $(`#${id}-textarea2`).val(titles);
+            $(`#${id}-textarea3`).val(contents);
+            $(`#${id}-textarea4`).val(passwords);
         }
 
         function showEdits(id) {
@@ -167,17 +176,22 @@
             $(`#${id}-submit`).show();
             $(`#${id}-delete`).show();
 
+            $(`#${id}-users`).hide();
+            $(`#${id}-titles`).hide();
             $(`#${id}-contents`).hide();
+            $(`#${id}-passwords`).hide();
             $(`#${id}-edit`).hide();
         }
 
         // 메모를 수정합니다.
         function submitEdit(id) {
             // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
-            let users = $(`#${id}-users`).text().trim();
-            let titles = $(`#${id}-titles`).text().trim();
-            let contents = $(`#${id}-textarea`).val().trim();
+            let users = $(`#${id}-textarea1`).val().trim();
+            let titles = $(`#${id}-textarea2`).val().trim();
+            let contents = $(`#${id}-textarea3`).val().trim();
+            let passwords = $(`#${id}-textarea4`).val().trim();
 
+            let pass = $(`#${id}-passwords`).val();
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
             if (isValidUsers(users) == false) {
                 return;
@@ -188,9 +202,12 @@
             if (isValidContents(contents) == false) {
                 return;
             }
+            if (isValidPasswords(passwords) == false) {
+                return;
+            }
 
             // 3. 전달할 data JSON으로 만듭니다.
-            let data = {'users': users, 'titles': titles,'contents': contents};
+            let data = {'users': users, 'titles': titles,'contents': contents,'passwords':passwords};
 
             // 4. PUT /api/memos/{id} 에 data를 전달합니다.
             $.ajax({
@@ -199,6 +216,9 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
+                    if(trim(pass)!==passwords){
+                        alert('비밀번호가 다릅니다.');
+                    }
                     alert('메시지 변경에 성공하였습니다.');
                     window.location.reload();
                 }
@@ -213,6 +233,30 @@
                     alert('메시지 삭제에 성공하였습니다.');
                     window.location.reload();
                 }
+            })
+        }
+
+        function checkPassword(id){
+            var id = id;
+            var passwords = $(`#${id}-textarea4`).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/memos/{id}/getPassword',
+                data : {id,passwords},
+                success: function(result) {
+                    if(result.passwords == passwords){
+                        $('${id}-delete').attr('disabled',false);
+                    }
+                    else{
+                        alert("비밀번호가 일치하지않습니다");
+                    }
+                }
+                ,
+                error: function(result) {
+                },
+                complete: function() {
+        }
             })
         }
 

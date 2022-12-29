@@ -19,6 +19,11 @@ public class MemoController {
         return new ModelAndView("index");
     }
 
+    @GetMapping("/api/memos/{id}/getPassword")
+    public MemoRequestDto getDetail(@PathVariable Long id){
+        return memoService.getDetail(id);
+    }
+
     @PostMapping("/api/memos")
     public Memo createMemo(@RequestBody MemoRequestDto requestDto) {
         return memoService.createMemo(requestDto);
@@ -43,4 +48,6 @@ public class MemoController {
     public Long deleteMemo(@PathVariable Long id) {
         return memoService.deleteMemo(id);
     }
+
+
 }
