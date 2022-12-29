@@ -67,7 +67,7 @@
                                 <textarea id="${id}-textarea2" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
                                 <textarea id="${id}-textarea3" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
                                 <input type="password" id="${id}-textarea4" name="passwords" maxlength='6'  value="" placeholder="비밀번호">
-                                <input type="button" class="btn btn-outline-primary mr-7"onclick="checkPassword(${id})" value="비밀번호 확인">
+
                             </div>
                         </div>
                         <!-- 버튼 영역-->
@@ -216,10 +216,7 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                    if(trim(pass)!==passwords){
-                        alert('비밀번호가 다릅니다.');
-                    }
-                    alert('메시지 변경에 성공하였습니다.');
+                        alert('메시지 변경에 성공하였습니다.');
                     window.location.reload();
                 }
             });
@@ -233,30 +230,6 @@
                     alert('메시지 삭제에 성공하였습니다.');
                     window.location.reload();
                 }
-            })
-        }
-
-        function checkPassword(id){
-            var id = id;
-            var passwords = $(`#${id}-textarea4`).val();
-
-            $.ajax({
-                type: 'GET',
-                url: '/api/memos/{id}/getPassword',
-                data : {id,passwords},
-                success: function(result) {
-                    if(result.passwords == passwords){
-                        $('${id}-delete').attr('disabled',false);
-                    }
-                    else{
-                        alert("비밀번호가 일치하지않습니다");
-                    }
-                }
-                ,
-                error: function(result) {
-                },
-                complete: function() {
-        }
             })
         }
 

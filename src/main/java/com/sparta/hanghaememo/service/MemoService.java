@@ -1,6 +1,7 @@
 package com.sparta.hanghaememo.service;
 
 import com.sparta.hanghaememo.dto.MemoRequestDto;
+import com.sparta.hanghaememo.dto.MemoResponseDto;
 import com.sparta.hanghaememo.entity.Memo;
 import com.sparta.hanghaememo.repository.MemoRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,11 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     @Transactional
-    public Memo createMemo(MemoRequestDto requestDto){
-        Memo memo = new Memo(requestDto);
+    public MemoResponseDto createMemo(MemoRequestDto memorequestDto){
+        Memo memo = new Memo(memorequestDto);
         memoRepository.save(memo);
-
-        return memo;
+        MemoResponseDto memoResponseDto = new MemoResponseDto(memo.getCreatedAt(),memo.getModifiedAt(),memo.getUsers(),memo.getTitles(),memo.getContents());
+        return memoResponseDto;
     }
 
     @Transactional(readOnly = true)
@@ -27,25 +28,47 @@ public class MemoService {
         return memoRepository.findAllByOrderByModifiedAtDesc();
     }
 
+    @Transactional(readOnly = true)
+    public MemoResponseDto getDetail(Long id){
+        Memo memo = checkMemo(memoRepository,id);
+        return new MemoResponseDto(memo.getCreatedAt(),memo.getModifiedAt(),memo.getUsers(),memo.getTitles(),memo.getContents());
+    }
+
+
     @Transactional
-    public Long update(Long id, MemoRequestDto requestDto) {
-        Memo memo = memoRepository.findById(id).orElseThrow(
-                ()-> new IllegalArgumentException("게시글이 존재하지 않습니다.")
-        );
-        memo.update(requestDto);
-        return memo.getId();
+    public MemoResponseDto update(Long id, MemoRequestDto requestDto) {
+        Memo memo = memoRepository.findByIdAndPasswords(id,requestDto.getPasswords());
+        if(!memo.equals(null)) {
+            memo.update(requestDto);
+        }
+        else if(memo.equals(null)){
+            return null;
+        }
+        MemoResponseDto memoResponseDto = new MemoResponseDto(memo.getCreatedAt(),memo.getModifiedAt(),memo.getUsers(),memo.getTitles(),memo.getContents());
+        return memoResponseDto;
     }
 
     @Transactional
-    public Long deleteMemo(Long id) {
-        memoRepository.deleteById(id);
-        return id;
+    public String deleteMemo(Long id, MemoRequestDto requestDto) {
+        Memo memo = memoRepository.findByIdAndPasswords(id,requestDto.getPasswords());
+        if(memo!=null) {
+            memoRepository.deleteById(id);
+            return "\"success\":true";
+        }
+        else{
+            return "\"success\":false";
+        }
+
     }
 
-    public MemoRequestDto getDetail(Long id) {
-        Memo memo = memoRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("게시글이 존재하지 않습니다.")
+    private Memo checkMemo(MemoRepository memoRepository,Long id){
+        return memoRepository.findById(id).orElseThrow(
+                ()->new IllegalArgumentException("게시글일 존재하지 않습니다.")
         );
-        return new MemoRequestDto();
     }
+
+    private static boolean checkPasswords(MemoRequestDto memoRequestDto,Memo memo){
+        return memo.getPasswords().equals(memoRequestDto.getPasswords());
+    }
+
 }

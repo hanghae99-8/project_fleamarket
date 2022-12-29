@@ -1,6 +1,7 @@
 package com.sparta.hanghaememo.controller;
 
 import com.sparta.hanghaememo.dto.MemoRequestDto;
+import com.sparta.hanghaememo.dto.MemoResponseDto;
 import com.sparta.hanghaememo.entity.Memo;
 import com.sparta.hanghaememo.service.MemoService;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +20,9 @@ public class MemoController {
         return new ModelAndView("index");
     }
 
-    @GetMapping("/api/memos/{id}/getPassword")
-    public MemoRequestDto getDetail(@PathVariable Long id){
-        return memoService.getDetail(id);
-    }
 
     @PostMapping("/api/memos")
-    public Memo createMemo(@RequestBody MemoRequestDto requestDto) {
+    public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
         return memoService.createMemo(requestDto);
     }
 
@@ -34,19 +31,19 @@ public class MemoController {
         return memoService.getMemo();
     }
 
-/*    @RequestMapping("/api/memos/{id}")
-    public MemoRequestDto getDetail(@PathVariable Long id){
+    @GetMapping("/api/memos/{id}")
+    public MemoResponseDto getDetail(@PathVariable Long id){
         return memoService.getDetail(id);
-    }*/
+    }
 
     @PutMapping("/api/memos/{id}")
-    public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
+    public MemoResponseDto updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
         return memoService.update(id, requestDto);
     }
 
     @DeleteMapping("/api/memos/{id}")
-    public Long deleteMemo(@PathVariable Long id) {
-        return memoService.deleteMemo(id);
+    public String deleteMemo(@PathVariable Long id,@RequestBody MemoRequestDto requestDto) {
+        return memoService.deleteMemo(id,requestDto);
     }
 
 
