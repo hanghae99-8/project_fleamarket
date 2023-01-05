@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.6'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.6'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.6'
