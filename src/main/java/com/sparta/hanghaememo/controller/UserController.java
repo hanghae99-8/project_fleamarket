@@ -1,39 +1,82 @@
 package com.sparta.hanghaememo.controller;
 
-import com.sparta.hanghaememo.dto.LoginRequestDto;
 import com.sparta.hanghaememo.dto.SignupRequestDto;
-import com.sparta.hanghaememo.dto.StatusResponse;
-import com.sparta.hanghaememo.service.UserService;
+import com.sparta.hanghaememo.entity.User;
+import com.sparta.hanghaememo.entity.UserRoleEnum;
+import com.sparta.hanghaememo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-@Slf4j
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class UserController {
 
-    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @PostMapping("/signup")
-    public ResponseEntity<StatusResponse> signup(@RequestBody SignupRequestDto signupRequestDto) {
-        StatusResponse user=userService.signup(signupRequestDto);
-        return new ResponseEntity<>(user, HttpStatus.valueOf(user.getStatusCode()));
+    // ADMIN_TOKEN
+    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+    @GetMapping("/signup")
+    public ModelAndView signupPage() {
+        return new ModelAndView("signup");
     }
 
-    @ResponseBody
+    @GetMapping("/login-page")
+    public ModelAndView loginPage() {
+        return new ModelAndView("login");
+    }
+
+    @PostMapping("/signup")
+    public String signup(SignupRequestDto signupRequestDto) {
+
+        String username = signupRequestDto.getUsername();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+
+        // 회원 중복 확인
+        Optional<User> found = userRepository.findByUsername(username);
+        if (found.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        }
+
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+        if (signupRequestDto.isAdmin()) {
+            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.ADMIN;
+        }
+
+        User user = new User(username, password, role);
+        userRepository.save(user);
+
+        return "redirect:/api/auth/login-page";
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<StatusResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        StatusResponse user = userService.login(loginRequestDto, response);
-        return new ResponseEntity<>(user,HttpStatus.valueOf(user.getStatusCode()));
+    public String login(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println("*********************************************************");
+        System.out.println("UserController.login");
+        System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
+        System.out.println("*********************************************************");
+
+        return "redirect:/api/auth/login-page";
+    }
+
+    @PostMapping("/forbidden")
+    public ModelAndView forbidden() {
+        return new ModelAndView("forbidden");
     }
 
 }

@@ -14,8 +14,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // nullable: null 허용 여부
-    // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -26,9 +24,19 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-
-    public User(String username, String password) {
+    public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
+        this.role = role;
+    }
+
+    public void addMemo(Memo memo){
+        /*forum의  writer 설정은 forum에서 함*/
+        memoList.add(memo);
+    }
+
+    public void addComment(Comment comment){
+        /*comment의 writer 설정은 comment에서 함*/
+        commentList.add(comment);
     }
 }

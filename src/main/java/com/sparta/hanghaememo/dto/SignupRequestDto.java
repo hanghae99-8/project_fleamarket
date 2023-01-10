@@ -1,9 +1,13 @@
 package com.sparta.hanghaememo.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class SignupRequestDto {
     private String username;
     private String password;
+    private boolean admin = false;
+    private String adminToken = "";
 }

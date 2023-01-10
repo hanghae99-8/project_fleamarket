@@ -1,5 +1,6 @@
 package com.sparta.hanghaememo.dto;
 
+import com.sparta.hanghaememo.entity.Memo;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,11 +13,11 @@ public class MemoResponseDto {
     private String titles;
     private String contents;
 
-    public MemoResponseDto(LocalDateTime createdAt,LocalDateTime modifiedAt,String users,String titles,String contents){
-        this.createdAt=createdAt;
-        this.modifiedAt=modifiedAt;
-        this.users=users;
-        this.titles=titles;
-        this.contents=contents;
+    public MemoResponseDto(Memo memo){
+        this.createdAt=memo.getCreatedAt();
+        this.modifiedAt=memo.getModifiedAt();
+        this.users=memo.getUsers();
+        this.titles=memo.getTitles();
+        this.contents=memo.getContents();
     }
 }

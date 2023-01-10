@@ -1,12 +1,15 @@
 package com.sparta.hanghaememo.dto;
 
+import com.sparta.hanghaememo.entity.Memo;
 import lombok.Getter;
 
 @Getter
 public class MemoRequestDto {
-    private String users;
     private String titles;
     private String contents;
-    private String passwords;
+
+    public Memo toEntity(String users) {
+        return Memo.builder().titles(titles).contents(contents).users(users).build();
+    }
 
 }
