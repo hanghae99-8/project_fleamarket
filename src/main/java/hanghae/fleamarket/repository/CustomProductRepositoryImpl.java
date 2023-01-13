@@ -19,7 +19,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     public void selectProduct(Long productId) {
         queryFactory
                 .update(product)
-                .set(product.select_count, product.select_count.add(+1))
+                .set(product.selectCount, product.selectCount.add(+1))
                 .where(product.id.eq(productId))
                 .execute();
     }
@@ -28,7 +28,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     public void cancelSelect(Long productId) {
         queryFactory
                 .update(product)
-                .set(product.select_count, product.select_count.add(-1))
+                .set(product.selectCount, product.selectCount.add(-1))
                 .where(product.id.eq(productId))
                 .execute();
     }
