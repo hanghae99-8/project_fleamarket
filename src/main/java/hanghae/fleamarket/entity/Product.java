@@ -29,9 +29,8 @@ public class Product extends Timestamped {
     private int price;
 
     @Column
-    private int select_count;
+    private int selectCount;
 
     @Column
     private boolean isSold;
-
 }
