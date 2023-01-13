@@ -39,7 +39,7 @@ public class CustomSelectRepositoryImpl implements CustomSelectRepository{
                 .execute();
     }
 
-    @Override
+    @Override //사용자id로 찜하기 목록 가져오기
     public List<ProductResponseDto> findAllByUserId(Long userId) {
         List<Select> selectList = queryFactory
                 .selectFrom(select).distinct()
@@ -56,5 +56,4 @@ public class CustomSelectRepositoryImpl implements CustomSelectRepository{
         }
         return response;
     }
-
 }

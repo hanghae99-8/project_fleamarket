@@ -22,17 +22,20 @@ public class BuyController {
     private final BuyService buyService;
     private final UserRepository userRepository;
 
+    // 구매하기 화면
     @GetMapping("/products/buy/{productId}")
     public ProductResponseDto getProduct(@PathVariable Long productId, HttpServletRequest request) {
         return buyService.getProduct(productId, request);
 
     }
 
+    //구매하기
     @PostMapping("/products/buy/{productId}")
     public BuyResponseDto buyProduct(@PathVariable Long productId, BuyRequestDto requestDto, HttpServletRequest request) {
         return buyService.buyProduct(productId, requestDto, request);
     }
 
+    //구매내역보기
     @GetMapping("/products/buy")
     public List<BuyResponseDto> findBuyProducts(HttpServletRequest request) {
         return buyService.findBuyProducts(request);

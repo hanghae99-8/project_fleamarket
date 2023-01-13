@@ -20,7 +20,7 @@ public class Product extends Timestamped {
     private String title;
 
     @Column
-    private String desc;
+    private String description;
 
     @Column
     private String img;
