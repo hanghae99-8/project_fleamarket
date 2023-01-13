@@ -1,6 +1,9 @@
 package hanghae.fleamarket.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hanghae.fleamarket.entity.Product;
+import hanghae.fleamarket.entity.QProduct;
+
 import javax.persistence.EntityManager;
 import static hanghae.fleamarket.entity.QProduct.product;
 
@@ -26,6 +29,15 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
         queryFactory
                 .update(product)
                 .set(product.select_count, product.select_count.add(-1))
+                .where(product.id.eq(productId))
+                .execute();
+    }
+
+    @Override
+    public void soldProduct(Long productId) {
+        queryFactory
+                .update(product)
+                .set(product.isSold, true)
                 .where(product.id.eq(productId))
                 .execute();
     }

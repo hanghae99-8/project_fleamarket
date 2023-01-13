@@ -23,6 +23,7 @@ public class SelectService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
+    @Transactional
     public boolean selectProduct(Long productId, HttpServletRequest request) {
 
         // todo claims 가져와서 토큰에서 username 빼오기
