@@ -33,7 +33,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
                 .execute();
     }
 
-    @Override
+    @Override //판매상태 true
     public void soldProduct(Long productId) {
         queryFactory
                 .update(product)

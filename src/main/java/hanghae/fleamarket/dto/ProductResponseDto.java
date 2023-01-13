@@ -26,7 +26,7 @@ public class ProductResponseDto {
         id = product.getId();
         name = product.getName();
         title = product.getTitle();
-        desc = product.getDesc();
+        desc = product.getDescription();
         img = product.getImg();
         price = product.getPrice();
         selectCount = product.getSelectCount();

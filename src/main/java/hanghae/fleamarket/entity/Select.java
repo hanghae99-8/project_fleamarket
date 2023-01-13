@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Select {
     @Id
-    @Column(name = "SELECT_ID")
+    @Column(name = "SELECTS_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

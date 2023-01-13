@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Buy extends Timestamped {
+public class Buy extends Timestamped{
     @Id
     @Column(name = "BUY_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
