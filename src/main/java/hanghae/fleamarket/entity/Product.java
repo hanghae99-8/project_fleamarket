@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product extends Timestamped {
     @Id
-    @Column(name = "product_id")
+    @Column(name = "PRODUCT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

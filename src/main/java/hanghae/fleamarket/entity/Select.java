@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Select {
     @Id
+    @Column(name = "SELECT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -16,7 +17,7 @@ public class Select {
     private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRDUCT_ID", nullable = false)
+    @JoinColumn(name = "PRODUCT_ID", nullable = false)
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)

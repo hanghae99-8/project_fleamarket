@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Buy extends Timestamped{
     @Id
-    @Column(name = "buy_id")
+    @Column(name = "BUY_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -20,7 +20,7 @@ public class Buy extends Timestamped{
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USR_ID", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
