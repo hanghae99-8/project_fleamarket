@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Entity(name = "selects")
 @NoArgsConstructor
 public class Select {
     @Id
@@ -13,8 +13,7 @@ public class Select {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private String contents;
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID", nullable = false)
@@ -23,6 +22,12 @@ public class Select {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    public Select(Product product, User user) {
+        this.product = product;
+        this.user = user;
+        status = true;
+    }
 
 }
 
