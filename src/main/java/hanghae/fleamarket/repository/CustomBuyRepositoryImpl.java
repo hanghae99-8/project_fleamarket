@@ -20,7 +20,7 @@ public class CustomBuyRepositoryImpl implements CustomBuyRepository{
         queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
+    @Override //사용자id로 구매내역 조회
     public List<BuyResponseDto> findByUserId(Long userId) {
         List<Buy> buyList = queryFactory
                 .selectFrom(buy).distinct()

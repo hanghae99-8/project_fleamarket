@@ -12,7 +12,6 @@ import hanghae.fleamarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -72,5 +71,4 @@ public class BuyService {
                 () -> new IllegalArgumentException("존재하지 않는 판매글입니다.")
         );
     }
-
 }
