@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Buy extends Timestamped{
     @Id
+    @Column(name = "buy_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -18,11 +19,11 @@ public class Buy extends Timestamped{
     @Column(nullable = false)
     private String address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USR_ID", nullable = false)
     private User user;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID", nullable = false)
     private Product product;
 

@@ -15,12 +15,12 @@ public class Select {
     @Column
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRDUCT_ID", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "USR_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
 }

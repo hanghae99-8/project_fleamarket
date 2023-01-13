@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product extends Timestamped {
     @Id
+    @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -31,6 +32,6 @@ public class Product extends Timestamped {
     private int select_count;
 
     @Column
-    private boolean issold;
+    private boolean isSold;
 
 }
