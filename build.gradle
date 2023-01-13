@@ -51,6 +51,8 @@ dependencies {
     //spring secutiry
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 //    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
     //querydsl 추가
