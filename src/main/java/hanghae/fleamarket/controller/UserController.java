@@ -1,4 +1,4 @@
-package hanghae.fleamarket.collector;
+package hanghae.fleamarket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import hanghae.fleamarket.dto.LoginRequestDto;
@@ -8,6 +8,8 @@ import hanghae.fleamarket.service.KakaoService;
 import hanghae.fleamarket.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +34,16 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(SignupRequestDto signupRequestDto) {
+    public String signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
         return "redirect:/api/user/login-page";
     }
 
     @ResponseBody
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ModelAndView login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
-        return "success";
+        return new ModelAndView("index");
     }
 
     @GetMapping("/kakao/callback")
