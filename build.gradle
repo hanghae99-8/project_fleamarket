@@ -66,10 +66,14 @@ dependencies {
     //Web Socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'io.socket:socket.io-client:2.0.1'
-    //Json
-    implementation group: 'org.json', name: 'json', version: '20220320'
 
+    //	JSON
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    // sockjs
+    implementation 'org.webjars:sockjs-client:1.5.1'
+    // stomp
+    implementation 'org.webjars:stomp-websocket:2.3.4'
 
 }
 

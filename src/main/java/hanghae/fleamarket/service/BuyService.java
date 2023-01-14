@@ -6,9 +6,11 @@ import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.entity.Buy;
 import hanghae.fleamarket.entity.Product;
 import hanghae.fleamarket.entity.User;
+import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.BuyRepository;
 import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class BuyService {
     private final ProductRepository productRepository;
     private final BuyRepository buyRepository;
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     //구매하기 화면
     @Transactional(readOnly = true)
@@ -34,8 +37,9 @@ public class BuyService {
     //구매하기
     @Transactional
     public BuyResponseDto buyProduct(Long productId, BuyRequestDto requestDto, HttpServletRequest request) {
-        // todo claims 가져와서 토큰에서 username 빼오기
-        String username = "";
+
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
 
         //토큰의 현재 사용자 객체 가져오기
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -53,8 +57,9 @@ public class BuyService {
 
     @Transactional(readOnly = true)
     public List<BuyResponseDto> findBuyProducts(HttpServletRequest request) {
-        // todo claims 가져와서 토큰에서 username 빼오기
-        String username = "";
+
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
 
         //토큰의 현재 사용자 객체 가져오기
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -70,5 +75,12 @@ public class BuyService {
         return productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 판매글입니다.")
         );
+    }
+
+    private Claims getClaims(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+
+//        jwtUtil.validateToken(token);
+        return jwtUtil.getUserInfoFromToken(token);
     }
 }
