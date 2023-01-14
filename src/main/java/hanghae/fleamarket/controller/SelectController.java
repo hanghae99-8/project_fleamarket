@@ -1,13 +1,12 @@
 package hanghae.fleamarket.controller;
 
+import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.service.SelectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,4 +19,8 @@ public class SelectController {
         return selectService.selectProduct(productId, request);
     }
 
+    @GetMapping("products/select-list")
+    public List<ProductResponseDto> findAll(HttpServletRequest request) {
+        return selectService.findAll(request);
+    }
 }
