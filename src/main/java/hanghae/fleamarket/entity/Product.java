@@ -4,6 +4,9 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -33,4 +36,11 @@ public class Product extends Timestamped {
 
     @Column
     private boolean isSold;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }
