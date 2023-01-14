@@ -355,7 +355,7 @@ button {
 
 #login-form {
     width: 538px;
-    height: 710px;
+    height: 750px;
     margin: 70px auto 141px auto;
     display: flex;
     flex-direction: column;
@@ -399,6 +399,30 @@ button {
     padding: 11px 12px;
     border-radius: 5px;
     background-color: #ffd43b;
+
+    font-family: SpoqaHanSansNeo;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    color: #414141;
+}
+
+#login-id-btn2 {
+    margin: 0 0 8px;
+    width: 393px;
+    height: 62px;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /*margin: 8px 0 0;*/
+    padding: 11px 12px;
+    border-radius: 5px;
+    border: solid 1px #212529;
+    background-color: #ffffff;
 
     font-family: SpoqaHanSansNeo;
     font-size: 20px;
