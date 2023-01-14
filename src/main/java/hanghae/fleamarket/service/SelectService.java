@@ -4,9 +4,11 @@ import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.entity.Product;
 import hanghae.fleamarket.entity.Select;
 import hanghae.fleamarket.entity.User;
+import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.SelectRepository;
 import hanghae.fleamarket.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +24,14 @@ public class SelectService {
     private final SelectRepository selectRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final JwtUtil jwtUtil;
 
-    @Transactional
+    @Transactional //찜하기
     public boolean selectProduct(Long productId, HttpServletRequest request) {
 
-        // todo claims 가져와서 토큰에서 username 빼오기
-        String username = "";
+
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
 
         //토큰의 현재 사용자 객체 가져오기
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -63,10 +67,11 @@ public class SelectService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<ProductResponseDto> findAll() {
-        // todo claims 가져와서 토큰에서 username 빼오기
-        String username = "";
+    @Transactional(readOnly = true) //찜하기 목록
+    public List<ProductResponseDto> findAll(HttpServletRequest request) {
+
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
 
         //토큰의 현재 사용자 객체 가져오기
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -75,5 +80,12 @@ public class SelectService {
 
         // 현재 사용자의 찜하기 목록 다 가져오기
         return selectRepository.findAllByUserId(user.getId());
+    }
+
+    private Claims getClaims(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+
+//        jwtUtil.validateToken(token);
+        return jwtUtil.getUserInfoFromToken(token);
     }
 }
