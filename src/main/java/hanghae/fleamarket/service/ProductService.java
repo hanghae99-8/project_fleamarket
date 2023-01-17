@@ -7,7 +7,6 @@ import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.UserRepository;
-import hanghae.fleamarket.s3.S3Entity;
 import hanghae.fleamarket.s3.S3Uploader;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
