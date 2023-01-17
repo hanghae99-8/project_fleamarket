@@ -51,47 +51,43 @@ public class ProductService {
 
     //게시글 저장
     @Transactional
-    public ProductResponseDto createProduct(ProductRequestDto requestDto, MultipartFile image,  HttpServletRequest request) throws IOException {
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
         Claims claims = getClaims(request);
         String username = claims.getSubject();
         User user = findUser(username);
 
-        log.info("name = {}", requestDto.getName());
-        log.info("title = {}", requestDto.getTitle());
-        log.info("price = {}", requestDto.getPrice());
-        log.info("description = {}", requestDto.getDescription());
+        Product product = findProduct(requestDto.getId());
+        product.update(requestDto);
 
-        log.info("이미지가 널인지? {}", image==null);
+        return new ProductResponseDto(product);
 
-        String imgUrl = "";
-        if (image != null && !image.isEmpty()) {
-            imgUrl = s3Uploader.upload(image, "images");
-        }
+//        String imgUrl = "";
+//        if (image != null && !image.isEmpty()) {
+//            imgUrl = s3Uploader.upload(image, "images");
+//        }
 
-        log.info("imgUrl은 무엇인가?{}",imgUrl);
-        Product product = new Product(requestDto, imgUrl, user);
+//        Product product = new Product(requestDto, user);//
+//        Product savedProduct = productRepository.save(product);
 
-        Product savedProduct = productRepository.save(product);
-
-        return new ProductResponseDto(savedProduct);
+//        return new ProductResponseDto(savedProduct);
     }
 
     //게시글 수정
     @Transactional
-    public ProductResponseDto update(Long productId, ProductRequestDto requestDto, MultipartFile image,  HttpServletRequest request) throws IOException {
+    public ProductResponseDto update(Long productId, ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
         //사용자 검증
         Claims claims = getClaims(request);
         String username = claims.getSubject();
 
         Product product = findProduct(productId);
 
-        String imgUrl = "";
-        if (image != null && !image.isEmpty()) {
-            imgUrl = s3Uploader.upload(image, "images");
-        }
+//        String imgUrl = "";
+//        if (image != null && !image.isEmpty()) {
+//            imgUrl = s3Uploader.upload(image, "images");
+//        }
 
         if (isSameUser(username, product)) {
-            product.update(requestDto, imgUrl);
+            product.update(requestDto);
             return new ProductResponseDto(product);
         }
         throw new IllegalArgumentException("본인의 글만 수정 가능합니다");
@@ -111,6 +107,21 @@ public class ProductService {
         }
         throw new IllegalArgumentException("본인의 글만 삭제 가능합니다");
 
+    }
+
+    @Transactional
+    public long uploadImage(MultipartFile image) {
+        String imgUrl = "";
+
+        try {
+            imgUrl = s3Uploader.upload(image, "images");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Product product = new Product();
+        product.uploadImage(imgUrl);
+        Product savedProduct = productRepository.save(product);
+        return savedProduct.getId();
     }
 
     //게시글 작성자 본인인지 확인

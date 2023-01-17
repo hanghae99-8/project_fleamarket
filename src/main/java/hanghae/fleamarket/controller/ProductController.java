@@ -5,7 +5,6 @@ import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,15 +33,15 @@ public class ProductController {
 
     //게시글 등록
     @PostMapping(value = "/api/products" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @RequestParam(required = false) MultipartFile image, HttpServletRequest request) throws IOException {
-        return productService.createProduct(requestDto, image, request);
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
+        return productService.createProduct(requestDto, request);
     }
 
     //게시글 수정
     @PutMapping(value = "/api/products/{productId}" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
-    public ProductResponseDto updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto, @RequestParam(required = false) MultipartFile image, HttpServletRequest request) throws IOException {
+    public ProductResponseDto updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
 
-        return productService.update(productId, requestDto, image, request);
+        return productService.update(productId, requestDto, request);
     }
 
     //게시글 삭제
@@ -50,5 +49,11 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId, HttpServletRequest request) {
         productService.deleteProduct(productId, request);
         return new ResponseEntity<>("삭제 성공", HttpStatus.CREATED);
+    }
+
+    //이미지업로드
+    @PostMapping("/api/products/image")
+    public Long uploadImage(@RequestParam MultipartFile image) {
+        return productService.uploadImage(image);
     }
 }

@@ -54,24 +54,26 @@ public class Product extends Timestamped {
         selectCount += count;
     }
 
-    public Product(ProductRequestDto requestDto, String imgUrl, User user) {
+    public Product(ProductRequestDto requestDto, User user) {
         name = requestDto.getName();
         title = requestDto.getTitle();
         description = requestDto.getDescription();
         price = requestDto.getPrice();
-        img = imgUrl;
         selectCount = 0;
         isSold = false;
         this.user = user;
     }
 
-    public void update(ProductRequestDto requestDto, String imgUrl) {
+    public void update(ProductRequestDto requestDto) {
         name = requestDto.getName();
         title = requestDto.getTitle();
         description = requestDto.getDescription();
         price = requestDto.getPrice();
-        img = imgUrl;
 
+    }
+
+    public void uploadImage(String imgUrl) {
+        img = imgUrl;
     }
 
 }
