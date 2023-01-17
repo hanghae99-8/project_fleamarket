@@ -7,6 +7,7 @@ import hanghae.fleamarket.entity.Buy;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static hanghae.fleamarket.entity.QBuy.buy;
 import static hanghae.fleamarket.entity.QProduct.product;
@@ -32,9 +33,13 @@ public class CustomBuyRepositoryImpl implements CustomBuyRepository{
 
         List<BuyResponseDto> response = new ArrayList<>();
 
-        for (Buy buyOne : buyList) {
-            response.add(new BuyResponseDto(buyOne));
-        }
-        return response;
+        return buyList
+                .stream()
+                .map(this::convertToBuyResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private BuyResponseDto convertToBuyResponseDto(Buy buy) {
+        return new BuyResponseDto(buy);
     }
 }

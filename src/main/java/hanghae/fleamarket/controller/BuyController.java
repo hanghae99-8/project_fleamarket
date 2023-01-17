@@ -3,7 +3,6 @@ package hanghae.fleamarket.controller;
 import hanghae.fleamarket.dto.BuyRequestDto;
 import hanghae.fleamarket.dto.BuyResponseDto;
 import hanghae.fleamarket.dto.ProductResponseDto;
-import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.repository.UserRepository;
 import hanghae.fleamarket.service.BuyService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor

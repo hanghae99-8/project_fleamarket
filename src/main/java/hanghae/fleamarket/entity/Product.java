@@ -43,4 +43,8 @@ public class Product extends Timestamped {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public void setSelectCount(int count) {
+        selectCount += count;
+    }
 }

@@ -44,6 +44,47 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
+    @Transactional
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
+
+        //DB에서 댓글 찾아오기
+        Comment comment = findComment(commentId);
+
+        //본인이 쓴 댓글인지 확인
+        if (!isSameUser(username, comment)) {
+            throw new IllegalArgumentException("본인의 댓글만 수정 가능합니다");
+        }
+        comment.update(requestDto);
+        return new CommentResponseDto(comment);
+    }
+
+    public boolean deleteComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
+
+        //DB에서 댓글 찾아오기
+        Comment comment = findComment(commentId);
+
+        //본인이 쓴 댓글인지 확인
+        if (!isSameUser(username, comment)) return false;
+
+        //댓글 삭제
+        commentRepository.deleteById(commentId);
+        return true;
+    }
+
+    private boolean isSameUser(String username, Comment comment) {
+        return comment.getUser().getUsername().equals(username);
+    }
+
+    private Comment findComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("댓글이 존재하지 않습니다")
+        );
+    }
+
     private Product findProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
