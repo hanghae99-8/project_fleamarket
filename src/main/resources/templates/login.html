@@ -14,14 +14,14 @@
 </head>
 <body>
 <div id="login-form">
-    <div id="login-title">당근팔조 로그인</div>
-    <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=667286c05284e080a69f12741f9a629f&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+    <div id="login-title">Log into Select Shop</div>
+    <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=55f3297a3af5b92951629b7f216bfce7&redirect_uri=http://carrot8.shop:8080/user/kakao/callback&response_type=code'">
         카카오로 로그인하기
     </button>
-    <button id="login-id-btn2" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?scope=profile%20email%20openid&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fuser%2Fgoogle%2Flogin%2Fredirect&client_id=822803213188-so31lbpakhv6gqi1st4n4e27dk6d43nd.apps.googleusercontent.com&service=lso&o2v=2&flowName=GeneralOAuthFlow'">
+    <button id="login-id-btn2" onclick="location.href='/user/logins'">
         구글로 로그인하기
     </button>
-    <button id="login-id-btn" onclick="location.href='/api/user/signup'">
+    <button id="login-id-btn" onclick="location.href='/user/signup'">
         회원 가입하기
     </button>
     <div class="login-id-label">아이디</div>
@@ -58,12 +58,22 @@
 
         $.ajax({
             type: "POST",
-            url: `/api/user/login`,
+            url: `/user/login`,
             contentType: "application/json",
             data: JSON.stringify({username: username, password: password}),
 
-            success: function (response) {
-                window.location.href = 'http://localhost:8080/api/homepage';
+            success: function (response, status, xhr) {
+                if(response === 'success') {
+                    let host = window.location.host;
+                    let url = host + '/homepage';
+
+                    document.cookie =
+                        'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
+                    window.location.href = 'http://' + url;
+                } else {
+                    alert('로그인에 실패하셨습니다. 다시 로그인해 주세요.')
+                    window.location.reload();
+                }
             }
         })
     }

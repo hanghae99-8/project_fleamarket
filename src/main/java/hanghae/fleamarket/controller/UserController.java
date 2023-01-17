@@ -1,6 +1,7 @@
 package hanghae.fleamarket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import hanghae.fleamarket.config.ConfigUtils;
 import hanghae.fleamarket.dto.GoogleLoginDto;
 import hanghae.fleamarket.dto.LoginRequestDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
@@ -13,20 +14,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
     private final GoogleService googleService;
-    private final JwtUtil jwtUtil;
+    private final ConfigUtils configUtils;
 
     //회원가입 페이지
     @GetMapping("/signup")
@@ -35,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
+    public String signup(@Valid SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
-        return "redirect:/api/user/login-page";
+        return "redirect:/user/login-page";
     }
 
     //로그인 페이지
@@ -58,8 +64,6 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        System.out.println("======인증코드======");
-        System.out.println(code);
         String createToken = kakaoService.kakaoLogin(code);
 
         // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
@@ -68,10 +72,27 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "redirect:/api/homepage";
+        return "redirect:/homepage";
     }
 
-    //구글 로그인
+    //구글 로그인 인증토큰
+    @GetMapping(value = "/logins")
+    public ResponseEntity<Object> moveGoogleInitUrl() {
+        String authUrl = configUtils.googleInitUrl();
+        URI redirectUri = null;
+        try {
+            redirectUri = new URI(authUrl);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(redirectUri);
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    //구글 로그인 redirect
     @GetMapping(value = "/google/login/redirect")
     public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
@@ -81,7 +102,7 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            return "redirect:/api/homepage";
+            return "redirect:/homepage";
         }
         else return "forbidden";
     }

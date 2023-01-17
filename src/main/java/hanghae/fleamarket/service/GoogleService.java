@@ -51,7 +51,6 @@ public class GoogleService {
 
     public String redirectGoogleLogin(String authCode){
         // HTTP 통신을 위해 RestTemplate 활용
-        System.out.println("redirect 시작!!");
         RestTemplate restTemplate = new RestTemplate();
         GoogleLoginRequest requestParams = GoogleLoginRequest.builder()
                 .clientId(configUtils.getGoogleClientId())
@@ -90,7 +89,6 @@ public class GoogleService {
                 //회원 중복 확인하기
                 String googleEmail = userInfoDto.getEmail();
                 User sameEmailUser = userRepository.findByEmail(googleEmail).orElse(null);
-                System.out.println(sameEmailUser);
                 //중복이 없으면 회원정보 저장
                 if (sameEmailUser == null) {
                     userRepository.save(new User(userInfoDto.getName(), encodedPassword, userInfoDto.getEmail(), UserRoleEnum.USER)); //유저권한은 USER
