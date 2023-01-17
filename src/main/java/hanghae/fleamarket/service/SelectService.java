@@ -2,7 +2,7 @@ package hanghae.fleamarket.service;
 
 import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.entity.Product;
-import hanghae.fleamarket.entity.Select;
+import hanghae.fleamarket.entity.Selects;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.ProductRepository;
@@ -10,13 +10,14 @@ import hanghae.fleamarket.repository.SelectRepository;
 import hanghae.fleamarket.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SelectService {
@@ -44,29 +45,27 @@ public class SelectService {
         );
 
         //찜하기 이력이 있는지 찾아오기
-        Select select = selectRepository.findByUserIdAndProductId(user.getId(), productId);
+        Selects selects = selectRepository.findByUserIdAndProductId(user.getId(), productId);
+
 
         //찜하기 이력이 없으면 새로 추가
-        if (select == null) {
-            select = new Select(product, user);
-            selectRepository.save(select);  //찜하기 테이블에 저장
-            product.setSelectCount(1);
-//            productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
+        if (selects == null) {
+            selects = new Selects(product, user);
+            selectRepository.save(selects);  //찜하기 테이블에 저장
+            productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
             return true;
         }
 
+        log.info("현재 좋아요 했나 안했나? {}", selects.getStatus());
         // 이미 찜하기 한 상태
-        if (!select.getStatus()) {
-            //todo dirty checking 되는지 확인
-            select.setStatus(false);
-            product.setSelectCount(-1);
+        if (selects.getStatus()) {
 
-//            selectRepository.cancelSelect(select.getId());//찜하기 테이블 상태 false
-//            productRepository.cancelSelect(productId); //판매글 찜하기 갯수 -1
+            selectRepository.cancelSelect(selects.getId());//찜하기 테이블 상태 false
+            productRepository.cancelSelect(productId); //판매글 찜하기 갯수 -1
             return false;
 
         } else { //찜하기 취소된 상태
-            selectRepository.selectProduct(select.getId()); //찜하기 테이블 상태 true
+            selectRepository.selectProduct(selects.getId()); //찜하기 테이블 상태 true
             productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
             return true;
         }
