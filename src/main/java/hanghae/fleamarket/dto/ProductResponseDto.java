@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Builder
 public class ProductResponseDto {
 
     private Long id;

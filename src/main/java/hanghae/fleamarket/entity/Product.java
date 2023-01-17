@@ -57,7 +57,7 @@ public class Product extends Timestamped {
     public Product(ProductRequestDto requestDto, String imgUrl, User user) {
         name = requestDto.getName();
         title = requestDto.getTitle();
-        description = requestDto.getDesc();
+        description = requestDto.getDescription();
         price = requestDto.getPrice();
         img = imgUrl;
         selectCount = 0;
@@ -67,7 +67,7 @@ public class Product extends Timestamped {
     public void update(ProductRequestDto requestDto, String imgUrl) {
         name = requestDto.getName();
         title = requestDto.getTitle();
-        description = requestDto.getDesc();
+        description = requestDto.getDescription();
         price = requestDto.getPrice();
         img = imgUrl;
 

@@ -1,4 +1,4 @@
-package hanghae.fleamarket.s3;
+package hanghae.fleamarket.service.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

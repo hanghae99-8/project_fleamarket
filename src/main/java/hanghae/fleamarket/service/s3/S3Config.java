@@ -1,4 +1,4 @@
-package hanghae.fleamarket.s3;
+package hanghae.fleamarket.service.s3;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

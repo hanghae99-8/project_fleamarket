@@ -9,7 +9,7 @@ public class ProductRequestDto {
     private String name;
     private String title;
 
-    private String desc;
+    private String description;
 
     private int price;
 }

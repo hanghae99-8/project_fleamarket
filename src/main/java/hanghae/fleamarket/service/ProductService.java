@@ -7,7 +7,7 @@ import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.UserRepository;
-import hanghae.fleamarket.s3.S3Uploader;
+import hanghae.fleamarket.service.s3.S3Uploader;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +34,10 @@ public class ProductService {
     //게시글 전체 조회
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllOrderByCreatedAtDesc()
-                .stream().map(product ->
-                        ProductResponseDto.builder()
-                                .id(product.getId())
-                                .name(product.getName())
-                                .title(product.getTitle())
-                                .desc(product.getDescription())
-                                .img(product.getImg())
-                                .price(product.getPrice())
-                                .selectCount(product.getSelectCount())
-                                .isSold(product.isSold())
-                                .build()).collect(Collectors.toList());
+        return productRepository.findAll()
+                .stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     //게시글 단일 조회
