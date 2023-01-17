@@ -34,6 +34,7 @@ public class UserService {
         // 회원 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
+            System.out.println("found: " + found.isPresent());
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
