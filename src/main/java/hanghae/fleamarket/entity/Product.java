@@ -43,7 +43,7 @@ public class Product extends Timestamped {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne/*(fetch = FetchType.LAZY)*/
     private User user;
 
     public void setComments(List<Comment> comments) {
@@ -62,6 +62,7 @@ public class Product extends Timestamped {
         img = imgUrl;
         selectCount = 0;
         isSold = false;
+        this.user = user;
     }
 
     public void update(ProductRequestDto requestDto, String imgUrl) {
@@ -72,4 +73,5 @@ public class Product extends Timestamped {
         img = imgUrl;
 
     }
+
 }

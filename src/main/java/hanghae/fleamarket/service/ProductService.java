@@ -10,6 +10,7 @@ import hanghae.fleamarket.repository.UserRepository;
 import hanghae.fleamarket.service.s3.S3Uploader;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -54,11 +56,19 @@ public class ProductService {
         String username = claims.getSubject();
         User user = findUser(username);
 
+        log.info("name = {}", requestDto.getName());
+        log.info("title = {}", requestDto.getTitle());
+        log.info("price = {}", requestDto.getPrice());
+        log.info("description = {}", requestDto.getDescription());
+
+        log.info("이미지가 널인지? {}", image==null);
+
         String imgUrl = "";
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             imgUrl = s3Uploader.upload(image, "images");
         }
 
+        log.info("imgUrl은 무엇인가?{}",imgUrl);
         Product product = new Product(requestDto, imgUrl, user);
 
         Product savedProduct = productRepository.save(product);
@@ -76,7 +86,7 @@ public class ProductService {
         Product product = findProduct(productId);
 
         String imgUrl = "";
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             imgUrl = s3Uploader.upload(image, "images");
         }
 
@@ -97,6 +107,7 @@ public class ProductService {
 
         if (isSameUser(username, product)) {
             productRepository.deleteById(productId);
+            return;
         }
         throw new IllegalArgumentException("본인의 글만 삭제 가능합니다");
 

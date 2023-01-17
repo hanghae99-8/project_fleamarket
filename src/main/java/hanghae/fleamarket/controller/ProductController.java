@@ -33,14 +33,14 @@ public class ProductController {
     }
 
     //게시글 등록
-    @PostMapping(value = "/api/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @RequestParam MultipartFile image, HttpServletRequest request) throws IOException {
+    @PostMapping(value = "/api/products" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @RequestParam(required = false) MultipartFile image, HttpServletRequest request) throws IOException {
         return productService.createProduct(requestDto, image, request);
     }
 
     //게시글 수정
-    @PutMapping(value = "/api/products/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ProductResponseDto updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto, @RequestParam MultipartFile image, HttpServletRequest request) throws IOException {
+    @PutMapping(value = "/api/products/{productId}" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
+    public ProductResponseDto updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto, @RequestParam(required = false) MultipartFile image, HttpServletRequest request) throws IOException {
 
         return productService.update(productId, requestDto, image, request);
     }
