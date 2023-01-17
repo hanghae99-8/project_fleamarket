@@ -1,17 +1,13 @@
 package hanghae.fleamarket.service;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanghae.fleamarket.dto.KakaoUserInfoDto;
-
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.entity.UserRoleEnum;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.UserRepository;
-import hanghae.fleamarket.entity.UserRoleEnum;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -34,8 +30,8 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
-        // 1. 카카오에 "인가 코드"로 "액세스 토큰" 요청
+    public String kakaoLogin(String code) throws JsonProcessingException {
+        // 1. 카카오에 "인증 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
