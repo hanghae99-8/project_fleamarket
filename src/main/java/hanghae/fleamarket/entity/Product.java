@@ -1,6 +1,9 @@
 package hanghae.fleamarket.entity;
 
 import javax.persistence.*;
+
+import hanghae.fleamarket.dto.ProductRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +35,7 @@ public class Product extends Timestamped {
     private int price;
 
     @Column
-    private int selectCount;
+    private Integer selectCount;
 
     @Column
     private boolean isSold;
@@ -40,11 +43,33 @@ public class Product extends Timestamped {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
     public void setSelectCount(int count) {
         selectCount += count;
+    }
+
+    public Product(ProductRequestDto requestDto, String imgUrl, User user) {
+        name = requestDto.getName();
+        title = requestDto.getTitle();
+        description = requestDto.getDesc();
+        price = requestDto.getPrice();
+        img = imgUrl;
+        selectCount = 0;
+        isSold = false;
+    }
+
+    public void update(ProductRequestDto requestDto, String imgUrl) {
+        name = requestDto.getName();
+        title = requestDto.getTitle();
+        description = requestDto.getDesc();
+        price = requestDto.getPrice();
+        img = imgUrl;
+
     }
 }

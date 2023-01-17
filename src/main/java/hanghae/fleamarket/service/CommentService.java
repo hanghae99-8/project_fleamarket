@@ -60,6 +60,7 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
+    @Transactional
     public boolean deleteComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
         Claims claims = getClaims(request);
         String username = claims.getSubject();
