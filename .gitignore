@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+##S3
+application-s3.properties
+
 ### STS ###
 .apt_generated
 .classpath
