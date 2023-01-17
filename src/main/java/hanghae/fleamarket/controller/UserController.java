@@ -37,28 +37,36 @@ public class UserController {
     @PostMapping("/signup")
     public String signup(@Valid SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
-        return "redirect:/api/user/login";
+        return "redirect:/api/user/login-page";
     }
 
     //로그인 페이지
-    @GetMapping("/login")
+    @GetMapping("/login-page")
     public ModelAndView loginPage() {
         return new ModelAndView("login");
     }
 
     //로그인 성공 후 홈페이지로 이동
+    @ResponseBody
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
+        return "success";
     }
 
     //카카오 로그인
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        String createToken = kakaoService.kakaoLogin(code, response);
+        System.out.println("======인증코드======");
+        System.out.println(code);
+        String createToken = kakaoService.kakaoLogin(code);
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+        // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
+        //키값                              밸류값 , substring(bearer과 공백을 삭제)
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         return "redirect:/api/homepage";
     }
@@ -69,10 +77,13 @@ public class UserController {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
         if (jwt != null){
-            response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
             return "redirect:/api/homepage";
         }
-        else return "jwt 값이 null입니다.";
+        else return "forbidden";
     }
 
     //접근 제한
