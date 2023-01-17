@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,14 +31,14 @@ public class User {
         this.password = password;
         this.role = role;
     }
+    @OneToMany(mappedBy="writer")
+    private List<Memo> memoList = new ArrayList<>();
 
     public void addMemo(Memo memo){
-        /*forum의  writer 설정은 forum에서 함*/
         memoList.add(memo);
     }
 
-    public void addComment(Comment comment){
-        /*comment의 writer 설정은 comment에서 함*/
-        commentList.add(comment);
-    }
+//    public void addComment(Comment comment){
+//        commentList.add(comment);
+//    }
 }

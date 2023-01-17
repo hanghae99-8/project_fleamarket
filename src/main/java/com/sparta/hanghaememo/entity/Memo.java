@@ -44,11 +44,11 @@ public class Memo extends Timestamped {
     }
 
 
-//    public void confirmWriter(User writer) {
-//        //writer는 변경이 불가능하므로 이렇게만 해주어도 될듯
-//        this.writer = writer;
-//        writer.addMemo(this);
-//    }
+    public void confirmWriter(User writer) {
+        //writer는 변경이 불가능하므로 이렇게만 해주어도 될듯
+        this.writer = writer;
+        writer.addMemo(this);
+    }
 
     @Builder
     public Memo(String users, String titles, String contents) {

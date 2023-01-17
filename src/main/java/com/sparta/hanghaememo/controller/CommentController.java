@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/sparta/{id}/comment")
+@RequestMapping("/api/memos/{id}/comment")
 public class CommentController {
     private final CommentService commentService;
 
@@ -23,13 +23,16 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public CommentResponse updateComment(@PathVariable Long id, @PathVariable Long commentId, @RequestBody CommentRequest commentRequest, HttpServletRequest request) {
-        return commentService.updateComment(id, commentId, commentRequest, request);
+    public CommentResponse updateComment(@PathVariable Long id, @PathVariable Long commentId, @RequestBody CommentRequest commentRequest, HttpServletRequest request){
+        return commentService.updateComment(id,commentId,commentRequest,request);
     }
-
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<StatusResponse> deleteComment(@PathVariable Long id, @PathVariable Long commentId, HttpServletRequest request) {
-        StatusResponse comment = commentService.deleteComment(id, commentId, request);
+    public ResponseEntity<StatusResponse> deleteComment(@PathVariable Long id, @PathVariable Long commentId, HttpServletRequest request){
+        StatusResponse comment = commentService.deleteComment(id,commentId,request);
         return new ResponseEntity<>(comment, HttpStatus.valueOf(comment.getStatusCode()));
     }
+//    @DeleteMapping("/{commentId}")
+//    public StatusResponse deleteComment(@PathVariable Long id, @PathVariable Long commentId, HttpServletRequest request){
+//        return commentService.deleteComment(id,commentId,request);
+//    }
 }
