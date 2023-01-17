@@ -1,9 +1,11 @@
 package hanghae.fleamarket.dto;
 
 import hanghae.fleamarket.entity.Comment;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class CommentResponseDto {
 
     private Long id;

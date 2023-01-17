@@ -29,5 +29,8 @@ public class Select {
         status = true;
     }
 
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }
 

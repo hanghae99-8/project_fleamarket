@@ -10,10 +10,11 @@ public class BuyResponseDto {
 
     private Long id;
     private String productName;
+    private String img;
     private String sellerName;
-    private LocalDateTime createdAt;
     private String phone;
     private String address;
+    private LocalDateTime createdAt;
 
     public BuyResponseDto(Buy buy) {
         id = buy.getId();
@@ -22,5 +23,6 @@ public class BuyResponseDto {
         createdAt = buy.getCreatedAt();
         phone = buy.getPhone();
         address = buy.getAddress();
+        img = buy.getProduct().getImg();
     }
 }

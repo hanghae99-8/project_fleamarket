@@ -37,4 +37,8 @@ public class Comment {
         product.setComments(comments);
         return comment;
     }
+
+    public void update(CommentRequestDto requestDto) {
+        content = requestDto.getContent();
+    }
 }

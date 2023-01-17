@@ -50,19 +50,24 @@ public class SelectService {
         if (select == null) {
             select = new Select(product, user);
             selectRepository.save(select);  //찜하기 테이블에 저장
-            productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
+            product.setSelectCount(1);
+//            productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
             return true;
         }
 
         // 이미 찜하기 한 상태
         if (!select.getStatus()) {
-            selectRepository.cancelSelect(select.getId());//찜하기 테이블 상태 false
-            productRepository.cancelSelect(productId); //판매글 찜하기 갯수 -1
+            //todo dirty checking 되는지 확인
+            select.setStatus(false);
+            product.setSelectCount(-1);
+
+//            selectRepository.cancelSelect(select.getId());//찜하기 테이블 상태 false
+//            productRepository.cancelSelect(productId); //판매글 찜하기 갯수 -1
             return false;
 
         } else { //찜하기 취소된 상태
             selectRepository.selectProduct(select.getId()); //찜하기 테이블 상태 true
-            productRepository.cancelSelect(productId); //판매글 찜하기 갯수 +1
+            productRepository.selectProduct(productId); //판매글  찜하기 갯수 +1
             return true;
         }
     }
