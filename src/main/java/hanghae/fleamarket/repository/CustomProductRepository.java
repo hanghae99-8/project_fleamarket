@@ -12,4 +12,7 @@ public interface CustomProductRepository {
     void cancelSelect(Long productId);
 
     void soldProduct(Long productId);
+
+
+    List<ProductResponseDto> getProducts();
 }

@@ -2,11 +2,9 @@ package hanghae.fleamarket.service;
 
 import hanghae.fleamarket.dto.ProductRequestDto;
 import hanghae.fleamarket.dto.ProductResponseDto;
-import hanghae.fleamarket.entity.Image;
 import hanghae.fleamarket.entity.Product;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.jwt.JwtUtil;
-import hanghae.fleamarket.repository.ImageRepository;
 import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -26,8 +24,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private final ImageRepository imageRepository;
-
     private final ProductRepository productRepository;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
@@ -36,10 +32,12 @@ public class ProductService {
     //게시글 전체 조회
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(ProductResponseDto::new)
-                .collect(Collectors.toList());
+        return productRepository.getProducts();
+
+//        return productRepository.findAll()
+//                .stream()
+//                .map(ProductResponseDto::new)
+//                .collect(Collectors.toList());
     }
 
     //게시글 단일 조회
@@ -49,6 +47,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
+    @Transactional
     public ResponseEntity<String> createProduct(ProductRequestDto dto, HttpServletRequest request, String imgUrl) {
         Claims claims = getClaims(request);
         String username = claims.getSubject();
@@ -118,11 +117,5 @@ public class ProductService {
         return jwtUtil.getUserInfoFromToken(token);
     }
 
-    public Long saveImage(String imgUrl) {
-        Image image = new Image();
-        image.setImgUrl(imgUrl);
-        Image savedImage = imageRepository.save(image);
-        return savedImage.getId();
-    }
 }
 
