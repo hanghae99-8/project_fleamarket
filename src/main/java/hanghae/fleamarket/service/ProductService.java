@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -50,26 +49,14 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    //게시글 저장
-    @Transactional
-    public ResponseEntity<String> createProduct(ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
+    public ResponseEntity<String> createProduct(ProductRequestDto dto, HttpServletRequest request, String imgUrl) {
         Claims claims = getClaims(request);
         String username = claims.getSubject();
         User user = findUser(username);
 
-        //이미지 id로 url 가져오기
-//        Image image = imageRepository.findById(requestDto.getImgId()).orElseThrow(
-//                () -> new IllegalArgumentException("이미지가 존재하지 않습니다")
-//        );
+        dto.setImgUrl(imgUrl);
 
-//        Optional<Image> image = imageRepository.findById(requestDto.getImgId());
-//        String imgUrl = "";
-//        if (image.isPresent()) {
-//            imgUrl = image.get().getImgUrl();
-//        }
-
-        // requestDto에 이미지 url을 포함한 정보가 있음
-        Product product = requestDto.toEntity(user);
+        Product product = dto.toEntity(user);
         productRepository.save(product);
 
         return new ResponseEntity<>("게시글 작성 완료", HttpStatus.OK);
@@ -106,20 +93,20 @@ public class ProductService {
         throw new IllegalArgumentException("접근 권한이 없습니다(본인의 글만 삭제 가능합니다)");
 
     }
-
     //게시글 작성자 본인인지 확인
+
     private boolean isSameUser(String username, Product product) {
         return username.equals(product.getUser().getUsername());
     }
-
     //상품게시글 찾기
+
     private Product checkProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
     }
-
     //사용자 찾기
+
     private User findUser(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
