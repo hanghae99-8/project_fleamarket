@@ -1,11 +1,19 @@
 package hanghae.fleamarket.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.entity.Product;
+import hanghae.fleamarket.entity.QComment;
 import hanghae.fleamarket.entity.QProduct;
+import hanghae.fleamarket.entity.QUser;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
+
+import static hanghae.fleamarket.entity.QComment.comment;
 import static hanghae.fleamarket.entity.QProduct.product;
+import static hanghae.fleamarket.entity.QUser.user;
 
 public class CustomProductRepositoryImpl implements CustomProductRepository {
 
@@ -40,6 +48,23 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
                 .set(product.isSold, true)
                 .where(product.id.eq(productId))
                 .execute();
+    }
+
+    @Override
+    public List<ProductResponseDto> getProducts() {
+        List<Product> productList = queryFactory
+                .selectFrom(product)
+                .join(product.user, user).fetchJoin()
+                .leftJoin(product.comments, comment).fetchJoin()
+                .orderBy(product.createdAt.desc())
+                .fetch();
+
+        List<ProductResponseDto> response = new ArrayList<>();
+
+        for (Product product1 : productList) {
+            response.add(new ProductResponseDto(product1));
+        }
+        return response;
     }
 
 
