@@ -12,12 +12,13 @@ import hanghae.fleamarket.repository.ProductRepository;
 import hanghae.fleamarket.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BuyService {
@@ -40,6 +41,9 @@ public class BuyService {
 
         Claims claims = getClaims(request);
         String username = claims.getSubject();
+
+        log.info("phone = {}", requestDto.getPhone());
+        log.info("address = {}", requestDto.getAddress());
 
         //토큰의 현재 사용자 객체 가져오기
         User user = userRepository.findByUsername(username).orElseThrow(
