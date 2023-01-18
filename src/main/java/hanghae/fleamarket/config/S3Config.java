@@ -1,4 +1,4 @@
-package hanghae.fleamarket.service.s3;
+package hanghae.fleamarket.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -8,6 +8,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+
+import javax.annotation.PostConstruct;
 
 @Controller
 public class S3Config {

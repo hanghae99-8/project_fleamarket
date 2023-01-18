@@ -76,4 +76,23 @@ public class Product extends Timestamped {
         img = imgUrl;
     }
 
+
+    public void confirmWriter(User writer) {
+        //writer는 변경이 불가능하므로 이렇게만 해주어도 될듯
+        this.user = writer;
+    }
+
+    @Builder
+    public Product(User user, String title, String contents, String name, String imgUrl, int price) {
+        this.user=user;
+        this.name = name;
+        this.title = title;
+        this.description = contents;
+        img = imgUrl;
+        this.price = price;
+        selectCount = 0;
+        isSold = false;
+
+    }
+
 }
