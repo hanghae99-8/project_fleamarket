@@ -62,14 +62,14 @@ public class ProductService {
 //                () -> new IllegalArgumentException("이미지가 존재하지 않습니다")
 //        );
 
-        Optional<Image> image = imageRepository.findById(requestDto.getImgId());
-        String imgUrl = "";
-        if (image.isPresent()) {
-            imgUrl = image.get().getImgUrl();
-        }
+//        Optional<Image> image = imageRepository.findById(requestDto.getImgId());
+//        String imgUrl = "";
+//        if (image.isPresent()) {
+//            imgUrl = image.get().getImgUrl();
+//        }
 
         // requestDto에 이미지 url을 포함한 정보가 있음
-        Product product = requestDto.toEntity(user, imgUrl);
+        Product product = requestDto.toEntity(user);
         productRepository.save(product);
 
         return new ResponseEntity<>("게시글 작성 완료", HttpStatus.OK);

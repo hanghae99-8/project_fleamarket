@@ -2,11 +2,16 @@ package hanghae.fleamarket.service;
 
 import hanghae.fleamarket.dto.LoginRequestDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
+import hanghae.fleamarket.dto.UserResponseDto;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.entity.UserRoleEnum;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.UserRepository;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,5 +73,21 @@ public class UserService {
 
         //헤더에 권한과 토큰을 넣어줌
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
+    }
+
+    public UserResponseDto getUserInfo(HttpServletRequest request) {
+        //사용자 검증
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다")
+        );
+        return new UserResponseDto(user);
+    }
+
+    private Claims getClaims(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        return jwtUtil.getUserInfoFromToken(token);
     }
 }

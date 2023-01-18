@@ -16,11 +16,11 @@ public class ProductRequestDto {
     private String title;
 
     private String description;
-    private long imgId;
+    private String imgUrl;
 
     private int price;
 
-    public Product toEntity(User user, String imgUrl) {
+    public Product toEntity(User user) {
         return Product.builder()
                 .name(name)
                 .title(title)

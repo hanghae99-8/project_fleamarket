@@ -5,11 +5,13 @@ import hanghae.fleamarket.config.ConfigUtils;
 import hanghae.fleamarket.dto.GoogleLoginDto;
 import hanghae.fleamarket.dto.LoginRequestDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
+import hanghae.fleamarket.dto.UserResponseDto;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.service.GoogleService;
 import hanghae.fleamarket.service.KakaoService;
 import hanghae.fleamarket.service.UserService;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -24,7 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Controller
+@RestController
+@CrossOrigin(originPatterns = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
@@ -41,9 +44,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid SignupRequestDto signupRequestDto) {
+    public String signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
-        return "redirect:/user/login-page";
+        return "success";
     }
 
     //로그인 페이지
@@ -119,4 +122,8 @@ public class UserController {
         return new ModelAndView("forbidden");
     }
 
+    @GetMapping("/info")
+    public UserResponseDto getUserInfo(HttpServletRequest request) {
+        return userService.getUserInfo(request);
+    }
 }

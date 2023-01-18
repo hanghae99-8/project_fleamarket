@@ -54,8 +54,7 @@ public class ProductController {
     //이미지업로드
     @ResponseBody
     @PostMapping(value = "/api/products/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Long saveImage(@RequestParam MultipartFile image) throws IOException {
-        String imgUrl = s3Service.upload(image);
-        return productService.saveImage(imgUrl);
+    public String saveImage(@RequestParam MultipartFile image) throws IOException {
+        return s3Service.upload(image);
     }
 }
