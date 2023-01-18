@@ -19,6 +19,8 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+
+        //헤더에 추가해줘야 함
         config.addExposedHeader("Authorization");
         source.registerCorsConfiguration("/**", config);
 
