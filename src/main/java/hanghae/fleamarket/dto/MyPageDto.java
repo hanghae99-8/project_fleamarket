@@ -22,10 +22,10 @@ public class MyPageDto {
     private String phone;
     private String address;
 
-    public MyPageDto(User user, Buy buy) {
-        userId = user.getId();
-        username = user.getUsername();
-        email = user.getEmail();
+    public MyPageDto(Buy buy) {
+        userId = buy.getUser().getId();
+        username = buy.getUser().getUsername();
+        email = buy.getUser().getEmail();
 
         buyId = buy.getId();
         name = buy.getProduct().getName();

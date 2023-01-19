@@ -22,21 +22,14 @@ public class CustomBuyRepositoryImpl implements CustomBuyRepository{
     }
 
     @Override //사용자id로 구매내역 조회
-    public List<BuyResponseDto> findByUserId(Long userId) {
-        List<Buy> buyList = queryFactory
+    public List<Buy> findByUserId(Long userId) {
+        return queryFactory
                 .selectFrom(buy).distinct()
                 .join(buy.user, user).fetchJoin()
                 .leftJoin(buy.product, product).fetchJoin()
                 .where(buy.user.id.eq(userId))
                 .orderBy(buy.createdAt.desc())
                 .fetch();
-
-        List<BuyResponseDto> response = new ArrayList<>();
-
-        return buyList
-                .stream()
-                .map(this::convertToBuyResponseDto)
-                .collect(Collectors.toList());
     }
 
     private BuyResponseDto convertToBuyResponseDto(Buy buy) {

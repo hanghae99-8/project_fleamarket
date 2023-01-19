@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(originPatterns = "http://localhost:3000")
@@ -124,7 +125,7 @@ public class UserController {
     }
 
     @GetMapping("mypage")
-    public MyPageDto getMyPage(HttpServletRequest request) {
+    public List<MyPageDto> getMyPage(HttpServletRequest request) {
         return userService.getMyPage(request);
     }
 }
