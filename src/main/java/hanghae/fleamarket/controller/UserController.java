@@ -107,7 +107,12 @@ public class UserController {
     public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
-       return jwt.substring(7);
+        if (jwt != null) {
+// Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+// cookie.setPath("/");
+// response.addCookie(cookie);//
+            return jwt;
+        } else return "noGoogleToken";
     }
 
     //접근 제한
