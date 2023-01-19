@@ -2,10 +2,7 @@ package hanghae.fleamarket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import hanghae.fleamarket.config.ConfigUtils;
-import hanghae.fleamarket.dto.GoogleLoginDto;
-import hanghae.fleamarket.dto.LoginRequestDto;
-import hanghae.fleamarket.dto.SignupRequestDto;
-import hanghae.fleamarket.dto.UserResponseDto;
+import hanghae.fleamarket.dto.*;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.service.GoogleService;
 import hanghae.fleamarket.service.KakaoService;
@@ -100,14 +97,13 @@ public class UserController {
     public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
-        if (jwt != null){
+        if (jwt != null) {
             Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
             cookie.setPath("/");
             response.addCookie(cookie);
 
             return "redirect:/homepage";
-        }
-        else return "forbidden";
+        } else return "forbidden";
     }
 
     //접근 제한
@@ -125,5 +121,10 @@ public class UserController {
     @GetMapping("/info")
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         return userService.getUserInfo(request);
+    }
+
+    @GetMapping("mypage")
+    public MyPageDto getMyPage(HttpServletRequest request) {
+        return userService.getMyPage(request);
     }
 }

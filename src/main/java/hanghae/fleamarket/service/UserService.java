@@ -1,11 +1,13 @@
 package hanghae.fleamarket.service;
 
 import hanghae.fleamarket.dto.LoginRequestDto;
+import hanghae.fleamarket.dto.MyPageDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
 import hanghae.fleamarket.dto.UserResponseDto;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.entity.UserRoleEnum;
 import hanghae.fleamarket.jwt.JwtUtil;
+import hanghae.fleamarket.repository.BuyRepository;
 import hanghae.fleamarket.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ public class UserService {
 
     // ADMIN_TOKEN
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final BuyRepository buyRepository;
 
     @Transactional
     public void signup(SignupRequestDto signupRequestDto) {
@@ -75,6 +78,21 @@ public class UserService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
     }
 
+    @Transactional(readOnly = true)
+    public MyPageDto getMyPage(HttpServletRequest request) {
+        //사용자 검증
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다")
+        );
+
+        buyRepository.findByUserId(user.getId());
+        return null;
+    }
+
+    @Transactional(readOnly = true)
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         //사용자 검증
         Claims claims = getClaims(request);
