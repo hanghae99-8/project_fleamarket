@@ -72,13 +72,16 @@ public class UserController {
         // code: 카카오 서버로부터 받은 인가 코드
         String createToken = kakaoService.kakaoLogin(code);
 
-        // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
-        //키값                              밸류값 , substring(bearer과 공백을 삭제)
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        if (createToken != null) {
+            // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
+            //키값                              밸류값 , substring(bearer과 공백을 삭제)
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
-        return "redirect:/";
+            return "success";
+        }
+        else return "noKakaoToken";
     }
 
     //구글 로그인 인증토큰
@@ -108,8 +111,8 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            return "redirect:/";
-        } else return "forbidden";
+            return "success";
+        } else return "noGoogleToken";
     }
 
     //접근 제한
