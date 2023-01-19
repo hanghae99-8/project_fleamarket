@@ -25,7 +25,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(originPatterns = "http://localhost:3000")
+@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
@@ -70,20 +70,25 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        String createToken = kakaoService.kakaoLogin(code);
+        String jwt = kakaoService.kakaoLogin(code, response);
 
-        if (createToken != null) {
+        return jwt;
+//        if (createToken != null) {
             // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
             //키값                              밸류값 , substring(bearer과 공백을 삭제)
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            return "success";
-        }
-        else return "noKakaoToken";
+//            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+//            cookie.setPath("/");
+//            response.addCookie(cookie);
+//
+//            return createToken;
+//        }
+//        else return "noKakaoToken";
     }
 
+    @GetMapping(value = "/kakao/login")
+    public String kakoRedirect(){
+        return "redirect:/user/logins";
+    }
     //구글 로그인 인증토큰
     @GetMapping(value = "/logins")
     public ResponseEntity<Object> moveGoogleInitUrl() {
@@ -107,10 +112,10 @@ public class UserController {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
         if (jwt != null) {
-// Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
-// cookie.setPath("/");
-// response.addCookie(cookie);//
-            return jwt;
+             Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+             cookie.setPath("/");
+             response.addCookie(cookie);//
+            return "success";
         } else return "noGoogleToken";
     }
 
