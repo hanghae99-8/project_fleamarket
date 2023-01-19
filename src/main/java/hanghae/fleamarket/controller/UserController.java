@@ -68,20 +68,20 @@ public class UserController {
 
     //카카오 로그인
     @GetMapping("/kakao/callback")
-    public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public void kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        String createToken = kakaoService.kakaoLogin(code);
+        kakaoService.kakaoLogin(code, response);
 
-        if (createToken != null) {
+//        if (createToken != null) {
             // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
             //키값                              밸류값 , substring(bearer과 공백을 삭제)
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            return "success";
-        }
-        else return "noKakaoToken";
+//            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+//            cookie.setPath("/");
+//            response.addCookie(cookie);
+//
+//            return createToken;
+//        }
+//        else return "noKakaoToken";
     }
 
     //구글 로그인 인증토큰
@@ -103,16 +103,12 @@ public class UserController {
 
     //구글 로그인 redirect
     @GetMapping(value = "/google/login/redirect")
-    public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
+    public void redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
         if (jwt != null) {
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            return "success";
-        } else return "noGoogleToken";
+            response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+        }
     }
 
     //접근 제한
