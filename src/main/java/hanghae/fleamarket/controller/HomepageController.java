@@ -8,9 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomepageController {
 
-    @GetMapping("/homepage")
-    public ModelAndView homePage() {
-        return new ModelAndView("index");
-    }
+//    @GetMapping("/homepage")
+//    public ModelAndView homePage() {
+//        return new ModelAndView("index");
+//    }
 }
 

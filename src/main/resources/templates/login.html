@@ -66,11 +66,12 @@
             success: function (response, status, xhr) {
                 if(response === 'success') {
                     let host = window.location.host;
-                    let url = host + '/homepage';
+                    // let url = host + '/homepage';
+                    alert('로그인 성공')
 
                     document.cookie =
                         'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
-                    window.location.href = 'http://' + url;
+                    // window.location.href = 'http://' + url;
                 } else {
                     alert('로그인에 실패하셨습니다. 다시 로그인해 주세요.')
                     window.location.reload();

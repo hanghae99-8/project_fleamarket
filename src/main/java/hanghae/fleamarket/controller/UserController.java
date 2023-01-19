@@ -78,7 +78,7 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "redirect:/homepage";
+        return "redirect:/";
     }
 
     //구글 로그인 인증토큰
@@ -108,7 +108,7 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            return "redirect:/homepage";
+            return "redirect:/";
         } else return "forbidden";
     }
 

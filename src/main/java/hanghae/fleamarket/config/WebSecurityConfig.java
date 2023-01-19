@@ -47,7 +47,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/user/**").permitAll()
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
 
                 .antMatchers("/homepage").permitAll()
                 .anyRequest().authenticated()
@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
+//        http.formLogin();
         http.formLogin().loginPage("/user/login-page").permitAll();
 
         http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
