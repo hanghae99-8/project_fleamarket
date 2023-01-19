@@ -85,6 +85,10 @@ public class UserController {
 //        else return "noKakaoToken";
     }
 
+    @GetMapping(value = "/kakao/login")
+    public String kakoRedirect(){
+        return "redirect:/user/logins";
+    }
     //구글 로그인 인증토큰
     @GetMapping(value = "/logins")
     public ResponseEntity<Object> moveGoogleInitUrl() {
@@ -108,10 +112,10 @@ public class UserController {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
         if (jwt != null) {
-// Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
-// cookie.setPath("/");
-// response.addCookie(cookie);//
-            return jwt;
+             Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+             cookie.setPath("/");
+             response.addCookie(cookie);//
+            return "success";
         } else return "noGoogleToken";
     }
 
