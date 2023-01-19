@@ -5,6 +5,7 @@ import hanghae.fleamarket.dto.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        System.out.println("매번 실행되나요?");-->네
+        System.out.println("매번 실행되나요?");
         String token = jwtUtil.resolveToken(request);
+        log.info("토큰 값은 = {}", token);
 
-        if(token != null) {
+           if(token != null) {
             if(!jwtUtil.validateToken(token)){ //유효한 토큰이 아니면
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
