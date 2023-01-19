@@ -61,7 +61,7 @@ public class UserController {
     }
 
     //아이디 중복검사
-    @PostMapping("/user/doublecheck")
+    @PostMapping("/doublecheck")
     public boolean loginDoubleCheck(@RequestBody LoginDoubleCheckDto loginDoubleCheckDto){
         return userService.loginDoubleCheck(loginDoubleCheckDto);
     }
