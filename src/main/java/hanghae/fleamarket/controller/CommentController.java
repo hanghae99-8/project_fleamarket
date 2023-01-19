@@ -21,7 +21,7 @@ public class CommentController {
         return commentService.createComment(productId, requestDto, request);
     }
 
-    @PutMapping("/comment/{commentId}")
+    @PatchMapping("/comment/{commentId}")
     public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
         return commentService.updateComment(commentId, requestDto, request);
     }
@@ -33,6 +33,4 @@ public class CommentController {
         }
         return new ResponseEntity<>("본인의 댓글만 삭제할 수 있습니다", HttpStatus.BAD_REQUEST);
     }
-
-
 }

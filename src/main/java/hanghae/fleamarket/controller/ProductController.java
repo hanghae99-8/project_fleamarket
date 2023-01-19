@@ -42,7 +42,7 @@ public class ProductController {
     }
 
     //게시글 수정
-    @PutMapping(value = "/api/products/{productId}" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
+    @PatchMapping(value = "/api/products/{productId}" /*, consumes = MediaType.MULTIPART_FORM_DATA_VALUE*/)
     public ProductResponseDto updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
         return productService.update(productId, requestDto, request);
     }
