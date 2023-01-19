@@ -107,11 +107,10 @@ public class UserController {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
         if (jwt != null) {
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            return "success";
+// Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+// cookie.setPath("/");
+// response.addCookie(cookie);//
+            return jwt;
         } else return "noGoogleToken";
     }
 

@@ -5,6 +5,7 @@ import hanghae.fleamarket.dto.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 //        System.out.println("매번 실행되나요?");-->네
         String token = jwtUtil.resolveToken(request);
+
+        //todo 해결할 것
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            log.info("쿠키값은? {}", cookie.getValue());
+            if (cookie.getName().equals("Authorization")) {
+                token = cookie.getValue();
+
+                break;
+            }
+        }
 
         if(token != null) {
             if(!jwtUtil.validateToken(token)){ //유효한 토큰이 아니면
