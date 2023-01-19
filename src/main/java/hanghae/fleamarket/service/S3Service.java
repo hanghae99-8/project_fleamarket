@@ -27,7 +27,7 @@ public class S3Service {
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
-    @Value("hanghae-fleamarket")
+    @Value("hanghae-fleamarket2")
     private String bucket;
 
     @Value("${cloud.aws.region.static}")

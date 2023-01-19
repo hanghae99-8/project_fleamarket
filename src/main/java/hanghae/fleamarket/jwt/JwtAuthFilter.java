@@ -27,21 +27,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        System.out.println("매번 실행되나요?");-->네
+        System.out.println("매번 실행되나요?");
         String token = jwtUtil.resolveToken(request);
+        log.info("토큰 값은 = {}", token);
 
-        //todo 해결할 것
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            log.info("쿠키값은? {}", cookie.getValue());
-            if (cookie.getName().equals("Authorization")) {
-                token = cookie.getValue();
-
-                break;
-            }
-        }
-
-        if(token != null) {
+           if(token != null) {
             if(!jwtUtil.validateToken(token)){ //유효한 토큰이 아니면
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
