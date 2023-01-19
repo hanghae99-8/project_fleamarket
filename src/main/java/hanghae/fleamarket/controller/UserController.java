@@ -2,10 +2,7 @@ package hanghae.fleamarket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import hanghae.fleamarket.config.ConfigUtils;
-import hanghae.fleamarket.dto.GoogleLoginDto;
-import hanghae.fleamarket.dto.LoginRequestDto;
-import hanghae.fleamarket.dto.SignupRequestDto;
-import hanghae.fleamarket.dto.UserResponseDto;
+import hanghae.fleamarket.dto.*;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.service.GoogleService;
 import hanghae.fleamarket.service.KakaoService;
@@ -56,11 +53,16 @@ public class UserController {
     }
 
     //로그인 성공 후 홈페이지로 이동
-    @ResponseBody
     @PostMapping("/login")
     public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
         return "success";
+    }
+
+    //아이디 중복검사
+    @PostMapping("/user/doublecheck")
+    public boolean loginDoubleCheck(@RequestBody LoginDoubleCheckDto loginDoubleCheckDto){
+        return userService.loginDoubleCheck(loginDoubleCheckDto);
     }
 
     //카카오 로그인

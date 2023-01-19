@@ -1,5 +1,6 @@
 package hanghae.fleamarket.service;
 
+import hanghae.fleamarket.dto.LoginDoubleCheckDto;
 import hanghae.fleamarket.dto.LoginRequestDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
 import hanghae.fleamarket.dto.UserResponseDto;
@@ -75,6 +76,11 @@ public class UserService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
     }
 
+    public boolean loginDoubleCheck(LoginDoubleCheckDto loginDoubleCheckDto){
+        Optional<User> user = userRepository.findByUsername(loginDoubleCheckDto.getUsername());
+        if (user.isPresent()) return true;
+        else return false;
+    }
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         //사용자 검증
         Claims claims = getClaims(request);
