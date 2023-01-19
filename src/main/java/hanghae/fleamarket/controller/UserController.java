@@ -25,7 +25,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
+@CrossOrigin(origins = "http://localhost:3000/**", originPatterns = "http://localhost:3000") // 컨트롤러에서 설정
+//@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
