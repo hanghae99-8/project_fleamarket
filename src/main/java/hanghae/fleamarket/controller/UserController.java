@@ -54,11 +54,16 @@ public class UserController {
     }
 
     //로그인 성공 후 홈페이지로 이동
-    @ResponseBody
     @PostMapping("/login")
     public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
         return "success";
+    }
+
+    //아이디 중복검사
+    @PostMapping("/user/doublecheck")
+    public boolean loginDoubleCheck(@RequestBody LoginDoubleCheckDto loginDoubleCheckDto){
+        return userService.loginDoubleCheck(loginDoubleCheckDto);
     }
 
     //카카오 로그인
