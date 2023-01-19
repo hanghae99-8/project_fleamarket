@@ -2,11 +2,14 @@ package hanghae.fleamarket.service;
 
 import hanghae.fleamarket.dto.LoginDoubleCheckDto;
 import hanghae.fleamarket.dto.LoginRequestDto;
+import hanghae.fleamarket.dto.MyPageDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
 import hanghae.fleamarket.dto.UserResponseDto;
+import hanghae.fleamarket.entity.Buy;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.entity.UserRoleEnum;
 import hanghae.fleamarket.jwt.JwtUtil;
+import hanghae.fleamarket.repository.BuyRepository;
 import hanghae.fleamarket.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +35,7 @@ public class UserService {
 
     // ADMIN_TOKEN
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final BuyRepository buyRepository;
 
     @Transactional
     public void signup(SignupRequestDto signupRequestDto) {
@@ -76,11 +82,34 @@ public class UserService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
     }
 
+
+    @Transactional(readOnly = true)
+    public List<MyPageDto> getMyPage(HttpServletRequest request) {
+        //사용자 검증
+        Claims claims = getClaims(request);
+        String username = claims.getSubject();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다")
+        );
+
+        List<Buy> buyList = buyRepository.findByUserId(user.getId());
+        List<MyPageDto> response = new ArrayList<>();
+        for (Buy buy : buyList) {
+            response.add(new MyPageDto(buy));
+        }
+
+        return response;
+    }
+
+    @Transactional(readOnly = true)
+
     public boolean loginDoubleCheck(LoginDoubleCheckDto loginDoubleCheckDto){
         Optional<User> user = userRepository.findByUsername(loginDoubleCheckDto.getUsername());
         if (user.isPresent()) return true;
         else return false;
     }
+
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         //사용자 검증
         Claims claims = getClaims(request);

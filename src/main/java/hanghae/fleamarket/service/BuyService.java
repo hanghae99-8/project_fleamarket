@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -71,7 +74,13 @@ public class BuyService {
         );
 
         //사용자 id로 구매내역 조회하기
-        return buyRepository.findByUserId(user.getId());
+        List<Buy> buyList = buyRepository.findByUserId(user.getId());
+        List<BuyResponseDto> response = new ArrayList<>();
+
+        for (Buy buy : buyList) {
+            response.add(new BuyResponseDto(buy));
+        }
+        return response;
     }
 
     //제품 검색

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(originPatterns = "http://localhost:3000")
@@ -102,14 +103,13 @@ public class UserController {
     public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
-        if (jwt != null){
+        if (jwt != null) {
             Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
             cookie.setPath("/");
             response.addCookie(cookie);
 
             return "redirect:/homepage";
-        }
-        else return "forbidden";
+        } else return "forbidden";
     }
 
     //접근 제한
@@ -127,5 +127,10 @@ public class UserController {
     @GetMapping("/info")
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         return userService.getUserInfo(request);
+    }
+
+    @GetMapping("mypage")
+    public List<MyPageDto> getMyPage(HttpServletRequest request) {
+        return userService.getMyPage(request);
     }
 }
