@@ -5,10 +5,12 @@ import hanghae.fleamarket.dto.BuyResponseDto;
 import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.entity.Buy;
 import hanghae.fleamarket.entity.Product;
+import hanghae.fleamarket.entity.Sell;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.jwt.JwtUtil;
 import hanghae.fleamarket.repository.BuyRepository;
 import hanghae.fleamarket.repository.ProductRepository;
+import hanghae.fleamarket.repository.SellRepository;
 import hanghae.fleamarket.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BuyService {
+    private final SellRepository sellRepository;
 
     private final ProductRepository productRepository;
     private final BuyRepository buyRepository;
@@ -43,13 +46,13 @@ public class BuyService {
     public BuyResponseDto buyProduct(Long productId, BuyRequestDto requestDto, HttpServletRequest request) {
 
         Claims claims = getClaims(request);
-        String username = claims.getSubject();
+        String buyer = claims.getSubject();
 
         log.info("phone = {}", requestDto.getPhone());
         log.info("address = {}", requestDto.getAddress());
 
         //토큰의 현재 사용자 객체 가져오기
-        User user = userRepository.findByUsername(username).orElseThrow(
+        User user = userRepository.findByUsername(buyer).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 사용자입니다.")
         );
 
@@ -57,6 +60,11 @@ public class BuyService {
         Product product = findProduct(productId);
         productRepository.soldProduct(product.getId());
 
+        //판매내역 저장
+        Sell sell = new Sell(product.getUser(),user, product);
+        sellRepository.save(sell);
+
+        //구매내역 저장
         Buy buy = new Buy(requestDto, user, product);
         buyRepository.save(buy);
         return new BuyResponseDto(buy);
@@ -82,8 +90,8 @@ public class BuyService {
         }
         return response;
     }
-
     //제품 검색
+
     private Product findProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 판매글입니다.")

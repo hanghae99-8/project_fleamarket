@@ -33,7 +33,7 @@ public class ProductController {
         return productService.getProduct(productId);
     }
 
-    //이미지업로드 //todo 테스트용 이미지+텍스트 폼데이터로 한번에
+    //이미지업로드
     @ResponseBody
     @PostMapping(value = "/api/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createProduct(@RequestParam MultipartFile image, ProductRequestDto dto, HttpServletRequest request) throws IOException {

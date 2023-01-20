@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+@Slf4j
 @Controller
 @CrossOrigin(origins = "http://localhost:3000/**", originPatterns = "http://localhost:3000") // 컨트롤러에서 설정
 //@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
@@ -133,11 +135,13 @@ public class UserController {
         return new ModelAndView("forbidden");
     }
 
+    @ResponseBody
     @GetMapping("/info")
     public UserResponseDto getUserInfo(HttpServletRequest request) {
         return userService.getUserInfo(request);
     }
 
+    @ResponseBody
     @GetMapping("mypage")
     public List<MyPageDto> getMyPage(HttpServletRequest request) {
         return userService.getMyPage(request);

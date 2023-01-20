@@ -4,7 +4,6 @@ import hanghae.fleamarket.entity.Product;
 import hanghae.fleamarket.entity.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.parameters.P;
 
 @Getter
 @Setter
