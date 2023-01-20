@@ -18,7 +18,6 @@ public class BuyResponseDto {
 
     public BuyResponseDto(Buy buy) {
         id = buy.getId();
-        productName = buy.getProduct().getName();
         sellerName = buy.getUser().getUsername();
         createdAt = buy.getCreatedAt();
         phone = buy.getPhone();

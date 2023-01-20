@@ -28,7 +28,6 @@ public class MyPageDto {
         email = buy.getUser().getEmail();
 
         buyId = buy.getId();
-        name = buy.getProduct().getName();
         title = buy.getProduct().getTitle();
         price = buy.getProduct().getPrice();
         sellerName = buy.getProduct().getUser().getUsername();
