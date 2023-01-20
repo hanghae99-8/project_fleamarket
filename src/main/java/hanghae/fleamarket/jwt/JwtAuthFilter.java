@@ -27,19 +27,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("매번 실행되나요?");
-        String token = jwtUtil.resolveToken(request);
-        log.info("토큰 값은 = {}", token);
-
-           if(token != null) {
-            if(!jwtUtil.validateToken(token)){ //유효한 토큰이 아니면
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
-                return;
-            }
-            Claims info = jwtUtil.getUserInfoFromToken(token);
-            //유효한 토큰임이 판정됐으면 SecurityContextHolder 객체를 생성
-            setAuthentication(info.getSubject());
-        }
+//        System.out.println("매번 실행되나요?");
+//        String token = jwtUtil.resolveToken(request);
+//        log.info("토큰 값은 = {}", token);
+//
+//           if(token != null) {
+//            if(!jwtUtil.validateToken(token)){ //유효한 토큰이 아니면
+//                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+//                return;
+//            }
+//            Claims info = jwtUtil.getUserInfoFromToken(token);
+//            //유효한 토큰임이 판정됐으면 SecurityContextHolder 객체를 생성
+//            setAuthentication(info.getSubject());
+//        } //todo 필터 안되는 문제
         //다음 필터로
         filterChain.doFilter(request,response);
     }

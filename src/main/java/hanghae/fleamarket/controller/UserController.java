@@ -67,6 +67,7 @@ public class UserController {
     }
 
     //아이디 중복검사
+    @ResponseBody
     @PostMapping("/doublecheck")
     public boolean loginDoubleCheck(@RequestBody LoginDoubleCheckDto loginDoubleCheckDto){
         return userService.loginDoubleCheck(loginDoubleCheckDto);
@@ -142,8 +143,11 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping("mypage")
+    @GetMapping("/mypage")
     public List<MyPageDto> getMyPage(HttpServletRequest request) {
-        return userService.getMyPage(request);
+        log.info("아예 안먹나?");
+        List<MyPageDto> myPage = userService.getMyPage(request);
+        log.info("마이페이지 !!! {} ", myPage.size());
+        return myPage;
     }
 }

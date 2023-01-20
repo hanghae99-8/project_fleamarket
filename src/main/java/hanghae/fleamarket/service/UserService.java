@@ -6,6 +6,7 @@ import hanghae.fleamarket.dto.MyPageDto;
 import hanghae.fleamarket.dto.SignupRequestDto;
 import hanghae.fleamarket.dto.UserResponseDto;
 import hanghae.fleamarket.entity.Buy;
+import hanghae.fleamarket.entity.Sell;
 import hanghae.fleamarket.entity.User;
 import hanghae.fleamarket.entity.UserRoleEnum;
 import hanghae.fleamarket.jwt.JwtUtil;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -98,14 +101,18 @@ public class UserService {
         List<Buy> buyList = buyRepository.findByUserId(user.getId());
         List<MyPageDto> response = new ArrayList<>();
         for (Buy buy : buyList) {
+            log.info("buy {}", buy.getUser().getUsername());
             response.add(new MyPageDto(buy));
         }
 
-        List<Buy> sellList = sellRepository.findByUserId(user.getId());
-        for (Buy sell : sellList) {
+        List<Sell> sellList = sellRepository.findByUserId(user.getId());
+        for (Sell sell : sellList) {
+            log.info("sell {}", sell.getUser().getUsername());
             response.add(new MyPageDto(sell));
         }
+        log.info("마이페이지 디티오는 몇개 ? {}", response.size());
 
+        response.add(new MyPageDto(user));
         return response;
     }
 

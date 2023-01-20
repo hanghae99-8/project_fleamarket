@@ -29,10 +29,6 @@ public class MyPageDto {
     private LocalDateTime sellCreatedAt;
 
     public MyPageDto(Buy buy) {
-        userId = buy.getUser().getId();
-        username = buy.getUser().getUsername();
-        email = buy.getUser().getEmail();
-
         buyId = buy.getId();
         title = buy.getProduct().getTitle();
         price = buy.getProduct().getPrice();
@@ -47,5 +43,13 @@ public class MyPageDto {
         sellTitle = sell.getProduct().getTitle();
         sellPrice = sell.getProduct().getPrice();
         sellCreatedAt = sell.getCreatedAt();
+    }
+
+    public MyPageDto(User user) {
+
+        userId = user.getId();
+        username = user.getUsername();
+        email = user.getEmail();
+
     }
 }
