@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -71,7 +72,7 @@ public class UserController {
 
     //카카오 로그인
     @GetMapping("/kakao/callback")
-    public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public String kakaoLogin(@RequestParam String code, HttpServletResponse response, RedirectAttributes re) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
         String createToken = kakaoService.kakaoLogin(code, response);
         // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
@@ -80,7 +81,9 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "redirect:/api/products";
+        re.addAttribute("Authorization", createToken);
+
+        return "redirect:http://localhost:3000";
     }
 
     @GetMapping(value = "/kakao/login")
@@ -106,14 +109,16 @@ public class UserController {
 
     //구글 로그인 redirect
     @GetMapping(value = "/google/login/redirect")
-    public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
+    public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response, RedirectAttributes re) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
          Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
          cookie.setPath("/");
          response.addCookie(cookie);//
 
-         return "redirect:/api/products";
+        re.addAttribute("Authorization", jwt);
+
+        return "redirect:http://localhost:3000";
     }
 
     //접근 제한
