@@ -47,8 +47,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/user/**").permitAll()
-//                .antMatchers("/**").permitAll()
-
+                .antMatchers("/**").permitAll()
                 .antMatchers("/homepage").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정

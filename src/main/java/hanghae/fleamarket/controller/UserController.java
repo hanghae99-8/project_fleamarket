@@ -24,7 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@RestController
+@Controller
 @CrossOrigin(origins = "http://localhost:3000/**", originPatterns = "http://localhost:3000") // 컨트롤러에서 설정
 //@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
 @RequiredArgsConstructor
@@ -42,6 +42,7 @@ public class UserController {
         return new ModelAndView("signup");
     }
 
+    @ResponseBody
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
@@ -58,7 +59,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
-        return "success";
+        return "redirect:/api/products";
     }
 
     //아이디 중복검사
@@ -71,24 +72,19 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        String jwt = kakaoService.kakaoLogin(code, response);
+        String createToken = kakaoService.kakaoLogin(code, response);
+        // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
+        //키값                              밸류값 , substring(bearer과 공백을 삭제)
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-        return jwt;
-//        if (createToken != null) {
-            // Cookie 생성 및 직접 브라우저에 Set, 서버에서 쿠키를 쿠키저장소에 넣어줌
-            //키값                              밸류값 , substring(bearer과 공백을 삭제)
-//            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-//            cookie.setPath("/");
-//            response.addCookie(cookie);
-//
-//            return createToken;
-//        }
-//        else return "noKakaoToken";
+        return "redirect:/api/products";
     }
 
     @GetMapping(value = "/kakao/login")
     public String kakoRedirect(){
-        return "redirect:/user/logins";
+        return "redirect:/api/products";
     }
     //구글 로그인 인증토큰
     @GetMapping(value = "/logins")
@@ -112,12 +108,11 @@ public class UserController {
     public String redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) {
         String jwt = googleService.redirectGoogleLogin(authCode);
 
-        if (jwt != null) {
-             Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
-             cookie.setPath("/");
-             response.addCookie(cookie);//
-            return "success";
-        } else return "noGoogleToken";
+         Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwt.substring(7));
+         cookie.setPath("/");
+         response.addCookie(cookie);//
+
+         return "redirect:/api/products";
     }
 
     //접근 제한
