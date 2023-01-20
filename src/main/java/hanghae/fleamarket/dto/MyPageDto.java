@@ -14,7 +14,6 @@ public class MyPageDto {
     private String email;
 
     private Long buyId;
-    private String name;
     private String title;
     private int price;
     private String sellerName;
