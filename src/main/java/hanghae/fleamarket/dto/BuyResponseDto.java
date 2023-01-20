@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class BuyResponseDto {
 
     private Long id;
-    private String productName;
+    private String title;
     private String img;
     private String sellerName;
     private String phone;
@@ -22,6 +22,7 @@ public class BuyResponseDto {
         createdAt = buy.getCreatedAt();
         phone = buy.getPhone();
         address = buy.getAddress();
+        title = buy.getProduct().getTitle();
         img = buy.getProduct().getImg();
     }
 }

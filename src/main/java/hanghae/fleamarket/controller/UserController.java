@@ -145,7 +145,6 @@ public class UserController {
     @ResponseBody
     @GetMapping("/mypage")
     public List<MyPageDto> getMyPage(HttpServletRequest request) {
-        log.info("아예 안먹나?");
         List<MyPageDto> myPage = userService.getMyPage(request);
         log.info("마이페이지 !!! {} ", myPage.size());
         return myPage;
