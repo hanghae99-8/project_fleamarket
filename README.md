@@ -4,7 +4,8 @@
 판매게시글 등록, 게시글 조회, 댓글달기, 좋아요, 구매하기, 구매내역 보기
 
 ## ERD
-![image](https://user-images.githubusercontent.com/116478121/213187334-462e44b7-8461-4c19-b128-224fbb84acf7.png)
+![스크린샷(11)](https://user-images.githubusercontent.com/95980876/213648476-9380cb80-ee59-40e7-a66c-c0c8f28025cb.png)
+
 
 ## API 설계
 https://www.notion.so/b898a61a16594bf9af23a460289e4215?v=c40292364a6f42e3a690e3b60a95e197
