@@ -63,7 +63,7 @@ public class ProductService {
 
     //게시글 수정
     @Transactional
-    public ProductResponseDto update(Long productId, ProductRequestDto requestDto, HttpServletRequest request) throws IOException {
+    public ProductResponseDto update(Long productId, ProductRequestDto requestDto, HttpServletRequest request) {
         //사용자 검증
         Claims claims = getClaims(request);
         String username = claims.getSubject();

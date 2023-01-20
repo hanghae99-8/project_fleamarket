@@ -20,9 +20,6 @@ public class Product extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
     private String title;
 
     @Column
@@ -55,7 +52,6 @@ public class Product extends Timestamped {
     }
 
     public Product(ProductRequestDto requestDto, User user) {
-        name = requestDto.getName();
         title = requestDto.getTitle();
         description = requestDto.getDescription();
         price = requestDto.getPrice();
@@ -65,7 +61,6 @@ public class Product extends Timestamped {
     }
 
     public void update(ProductRequestDto requestDto) {
-        name = requestDto.getName();
         title = requestDto.getTitle();
         description = requestDto.getDescription();
         price = requestDto.getPrice();
@@ -85,7 +80,6 @@ public class Product extends Timestamped {
     @Builder
     public Product(User user, String title, String contents, String name, String imgUrl, int price) {
         this.user=user;
-        this.name = name;
         this.title = title;
         this.description = contents;
         img = imgUrl;

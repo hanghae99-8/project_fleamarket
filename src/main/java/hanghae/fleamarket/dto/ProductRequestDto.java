@@ -12,7 +12,6 @@ public class ProductRequestDto {
 
     private Long id;
 
-    private String name;
     private String title;
 
     private String description;
@@ -22,7 +21,6 @@ public class ProductRequestDto {
 
     public Product toEntity(User user) {
         return Product.builder()
-                .name(name)
                 .title(title)
                 .contents(description)
                 .price(price)

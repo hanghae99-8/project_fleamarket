@@ -16,7 +16,6 @@ import java.util.List;
 public class ProductResponseDto {
 
     private Long id;
-    private String name;
     private String title;
 
     private String desc;
@@ -29,7 +28,6 @@ public class ProductResponseDto {
 
     public ProductResponseDto(Product product) {
         id = product.getId();
-        name = product.getName();
         title = product.getTitle();
         desc = product.getDescription();
         img = product.getImg();
