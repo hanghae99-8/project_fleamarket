@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://carrot8.shop:8080", "http://localhost:3000");
+                .allowedOrigins("http://carrot8.shop:8080", "https://react-8-jisxre6h6-jung2232.vercel.app/");
     }
 }

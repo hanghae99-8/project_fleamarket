@@ -28,7 +28,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@CrossOrigin(origins = "http://localhost:3000/**", originPatterns = "http://localhost:3000") // 컨트롤러에서 설정
+@CrossOrigin(origins = "https://react-8-jisxre6h6-jung2232.vercel.app/**", originPatterns = "https://react-8-jisxre6h6-jung2232.vercel.app/") // 컨트롤러에서 설정
 //@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -86,7 +86,7 @@ public class UserController {
 
         re.addAttribute("Authorization", createToken);
 
-        return "redirect:http://localhost:3000";
+        return "redirect:https://react-8-jisxre6h6-jung2232.vercel.app/";
     }
 
     @GetMapping(value = "/kakao/login")
@@ -121,7 +121,7 @@ public class UserController {
 
         re.addAttribute("Authorization", jwt);
 
-        return "redirect:http://localhost:3000";
+        return "redirect:https://react-8-jisxre6h6-jung2232.vercel.app/";
     }
 
     //접근 제한
