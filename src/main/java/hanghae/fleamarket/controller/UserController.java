@@ -28,7 +28,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@CrossOrigin(origins = "https://react-8-jisxre6h6-jung2232.vercel.app/**", originPatterns = "https://react-8-jisxre6h6-jung2232.vercel.app/") // 컨트롤러에서 설정
+//@CrossOrigin(origins = "*", originPatterns = "*") // 컨트롤러에서 설정
 //@CrossOrigin(originPatterns = "http://localhost:3000") //cors 설정
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -48,6 +48,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
+        log.info("signup 실행");
         userService.signup(signupRequestDto);
         return "success";
     }
@@ -62,6 +63,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        log.info("login 실행");
         userService.login(loginRequestDto, response);
         return "success";
     }
@@ -70,6 +72,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/doublecheck")
     public boolean loginDoubleCheck(@RequestBody LoginDoubleCheckDto loginDoubleCheckDto){
+        log.info("실행되는가 - 컨트롤러");
         return userService.loginDoubleCheck(loginDoubleCheckDto);
     }
 
@@ -86,7 +89,7 @@ public class UserController {
 
         re.addAttribute("Authorization", createToken);
 
-        return "redirect:https://react-8-jisxre6h6-jung2232.vercel.app/";
+        return "redirect:http://localhost:3000";
     }
 
     @GetMapping(value = "/kakao/login")
@@ -121,7 +124,7 @@ public class UserController {
 
         re.addAttribute("Authorization", jwt);
 
-        return "redirect:https://react-8-jisxre6h6-jung2232.vercel.app/";
+        return "redirect:http://localhost:3000";
     }
 
     //접근 제한

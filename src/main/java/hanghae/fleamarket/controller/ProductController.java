@@ -5,6 +5,7 @@ import hanghae.fleamarket.dto.ProductResponseDto;
 import hanghae.fleamarket.service.S3Service;
 import hanghae.fleamarket.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -30,6 +32,7 @@ public class ProductController {
     //게시글 단일 조회
     @GetMapping("/api/products/{productId}")
     public ProductResponseDto findProduct(@PathVariable Long productId) {
+        log.info("product add 실행");
         return productService.getProduct(productId);
     }
 

@@ -117,9 +117,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-
     public boolean loginDoubleCheck(LoginDoubleCheckDto loginDoubleCheckDto){
+        log.info("실행되는가?");
         Optional<User> user = userRepository.findByUsername(loginDoubleCheckDto.getUsername());
+        log.info("유저네임이 존재하는지 더블체크 = {}" , user.get().getUsername());
         if (user.isPresent()) return true;
         else return false;
     }
