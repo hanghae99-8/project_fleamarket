@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT_NAME="project-fleamarket"
+PROJECT_NAME="project_fleamarket"
 JAR_PATH="/home/ubuntu/project_fleamarket/build/libs/*.jar"
 DEPLOY_PATH=/home/ubuntu/$PROJECT_NAME/
 DEPLOY_LOG_PATH="/home/ubuntu/$PROJECT_NAME/deploy.log"
