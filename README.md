@@ -19,3 +19,7 @@ https://www.notion.so/b898a61a16594bf9af23a460289e4215?v=c40292364a6f42e3a690e3b
 
 3. 로그인 성공 후에 jwt 토큰이 헤더에 들어가지 않음<br>
 -> 해결 : RedirectAttributes를 이용하여 쿼리 파라미터로 전달
+
+![1](https://user-images.githubusercontent.com/116478121/215316365-0ad5740f-5607-47d8-ab72-d3c6f725d273.png)
+![2](https://user-images.githubusercontent.com/116478121/215316367-debd8f15-211d-49c7-8554-1121b925107a.png)
+![3](https://user-images.githubusercontent.com/116478121/215316368-a37321cb-0966-4cea-aa41-754e25cd844c.png)
